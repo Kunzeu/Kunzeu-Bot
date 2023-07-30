@@ -22,7 +22,7 @@ module.exports = {
       const precioEcto = await getPrecioEcto();
       if (precioEcto !== null) {
         // Calcula el precio total de la cantidad de Ectos ingresada
-        const precioTotal = cantidadEctos * precioEcto;
+        const precioTotal = cantidadEctos * precioEcto *0.9;
 
         // Calcula el precio de venta de 1 Ecto al 90%
         const precioEcto90 = Math.floor(precioEcto * 0.9);

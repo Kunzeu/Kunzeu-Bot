@@ -94,11 +94,11 @@ module.exports = {
         const rarezaObjeto = objetoDetails.rarity;
 
         // Calcula el precio al 85% si el objeto es legendary, de lo contrario, calcula al 90%
-        const descuento = rarezaObjeto === 'Legendary' && excludedLegendaryItems.has(objetoId) ? 0.9 : 0.85;
+        const descuento = rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9;
         const precioDescuento = Math.floor(precioVenta * descuento);
 
         // Calcula la cantidad de oro, plata y cobre para los precios
-        const calcularMonedas = (precio) => {
+          const calcularMonedas = (precio) => {
           const oro = Math.floor(precio / 10000);
           const plata = Math.floor((precio % 10000) / 100);
           const cobre = precio % 100;
@@ -122,7 +122,7 @@ module.exports = {
 
         description += `\n\n**Este es el precio al ${descuento * 100}%**: ${calcularMonedas(precioDescuento)}`;
 
-        if (rarezaObjeto === 'Legendary' && ectosRequeridos !== null) {
+        if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) && ectosRequeridos !== null) {
           description += `\n\n**Ectos a dar/recibir**: ${ectosRequeridos} <:glob:1134942274598490292>`;
           description += `\n**Número de Stacks de Ectos**: ${numStacksEctos} <:glob:1134942274598490292>`;
         }

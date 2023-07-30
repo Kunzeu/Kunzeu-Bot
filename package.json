@@ -17,7 +17,7 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "mongodb": "5.7",
-    "mongoose": "^7.4.1"
+    "mongoose": "^6.10.1"
   },
   "devDependencies": {
     "eslint": "^8.46.0"

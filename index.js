@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const express = require('express');
 require('dotenv').config();
 
 // Importar mongoose y configurar la opción strictQuery para suprimir la advertencia
@@ -32,6 +33,22 @@ for (const folder of commandFolders) {
     }
   }
 }
+
+// Crear el servidor HTTP usando express
+const app = express();
+
+// Ruta de inicio para verificar si el servidor está en línea
+app.get('/', (req, res) => {
+  res.send('El bot está en línea y funcionando.');
+});
+
+// Obtener el puerto desde la variable de entorno process.env.PORT o usar el puerto 3000 como valor predeterminado
+const port = process.env.PORT || 3000;
+
+// Escuchar en el puerto proporcionado
+app.listen(port, () => {
+  console.log(`Bot escuchando en el puerto ${port}`);
+});
 
 client.once(Events.ClientReady, () => {
   console.log('Ready!');

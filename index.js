@@ -1,5 +1,3 @@
-const fs = require('node:fs');
-const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const express = require('express');
 require('dotenv').config();
@@ -17,38 +15,9 @@ connectDB();
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
 
-for (const folder of commandFolders) {
-  const commandsPath = path.join(foldersPath, folder);
-  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-  for (const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    const command = require(filePath);
-    if ('data' in command && 'execute' in command) {
-      client.commands.set(command.data.name, command);
-    } else {
-      console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-    }
-  }
-}
-
-// Crear el servidor HTTP usando express
-const app = express();
-
-// Ruta de inicio para verificar si el servidor está en línea
-app.get('/', (req, res) => {
-  res.send('El bot está en línea y funcionando.');
-});
-
-// Obtener el puerto desde la variable de entorno process.env.PORT o usar el puerto 3000 como valor predeterminado
-const port = process.env.PORT || 3000;
-
-// Escuchar en el puerto proporcionado
-app.listen(port, () => {
-  console.log(`Bot escuchando en el puerto ${port}`);
-});
+// Iniciar sesión en el cliente usando el token
+client.login(process.env.DISCORD_TOKEN);
 
 client.once(Events.ClientReady, () => {
   console.log('Ready!');
@@ -71,8 +40,18 @@ client.on(Events.InteractionCreate, async interaction => {
   }
 });
 
-// Obtener el token desde el archivo config.json
-const { token } = require('./config.json');
+// Crear el servidor HTTP usando express
+const app = express();
 
-// Iniciar sesión en el cliente usando el token
-client.login(token);
+// Ruta de inicio para verificar si el servidor está en línea
+app.get('/', (req, res) => {
+  res.send('El bot está en línea y funcionando.');
+});
+
+// Obtener el puerto desde la variable de entorno process.env.PORT o usar el puerto 3000 como valor predeterminado
+const port = process.env.PORT || 3000;
+
+// Escuchar en el puerto proporcionado
+app.listen(port, () => {
+  console.log(`Bot escuchando en el puerto ${port}`);
+});

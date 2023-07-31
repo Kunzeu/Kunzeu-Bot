@@ -8,11 +8,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 
-// Importar la función connectDB para establecer la conexión a MongoDB
-const connectDB = require('./mongodb');
 
-// Llamar a la función connectDB para establecer la conexión a MongoDB
-connectDB();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 

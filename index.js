@@ -1,9 +1,21 @@
-const { REST, Routes } = require('discord.js');
-const { clientId, token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+require('dotenv').config();
 
-const commands = [];
+// Importar mongoose y configurar la opción strictQuery para suprimir la advertencia
+const mongoose = require('mongoose');
+mongoose.set('strictQuery', false);
+
+// Importar la función connectDB para establecer la conexión a MongoDB
+const connectDB = require('./mongodb');
+
+// Llamar a la función connectDB para establecer la conexión a MongoDB
+connectDB();
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -14,27 +26,36 @@ for (const folder of commandFolders) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
     if ('data' in command && 'execute' in command) {
-      commands.push(command.data.toJSON());
+      client.commands.set(command.data.name, command);
     } else {
       console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
     }
   }
 }
 
-const rest = new REST({ version: '9' }).setToken(token);
+client.once(Events.ClientReady, () => {
+  console.log('Ready!');
+  client.user.setStatus('idle');
+  client.user.setActivity('Guild Wars 2');
+});
 
-(async () => {
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = client.commands.get(interaction.commandName);
+
+  if (!command) return;
+
   try {
-    console.log(`Started refreshing ${commands.length} application (/) commands globally.`);
-
-    // Utiliza la ruta global para registrar los comandos a nivel de aplicación (client ID)
-    const data = await rest.put(
-      Routes.applicationCommands(clientId),
-      { body: commands },
-    );
-
-    console.log(`Successfully reloaded ${data.length} application (/) commands globally.`);
+    await command.execute(interaction);
   } catch (error) {
     console.error(error);
+    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
   }
-})();
+});
+
+// Obtener el token desde el archivo config.json
+const { token } = require('./config.json');
+
+// Iniciar sesión en el cliente usando el token
+client.login(token);

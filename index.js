@@ -3,6 +3,7 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
 
+
 // Importar mongoose y configurar la opción strictQuery para suprimir la advertencia
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
@@ -55,7 +56,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 // Obtener el token desde el archivo config.json
-const { token } = require('./config.json');
+const token = process.env.DISCORD_TOKEN;
 
 // Iniciar sesión en el cliente usando el token
 client.login(token);

@@ -42,8 +42,8 @@ const itemsMap = new Map([
   [96978, { mainName: 'Antique Summoning Stone', altNames: ['ASS', 'ass'] }],
   [96722, { mainName: 'Jade Runestone', altNames: ['runestone', 'jade'] }],
   [96347, { mainName: 'Chunk of Ancient Ambergris', altNames: ['Amber', 'amber'] }],
-  [84731, { mainName: 'Blue', altNames: ['blue'] }],
-  [85016, { mainName: 'Green', altNames: ['green'] }],
+  [85016, { mainName: 'Blue', altNames: ['blue'] }],
+  [84731, { mainName: 'Green', altNames: ['green'] }],
   [83008, { mainName: 'Yellow', altNames: ['yellow'] }],
   [19721, { mainName: 'Glob of Ectoplasm', altNames: ['Ectos', 'ecto'] }],
 ]);
@@ -128,7 +128,7 @@ module.exports = {
         }
 
         const embed = {
-          title: `Precio del objeto ${nombreObjeto}`,
+          title: `Precio del objeto: ${nombreObjeto}`,
           description: description,
           color: 0x00ff00, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
         };

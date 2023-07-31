@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
 
+// Configurar la opción strictQuery para suprimir la advertencia
+mongoose.set('strictQuery', false);
+
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_CONNECT_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('Conectado a MongoDB con éxito');
+    console.log("Conectado a MongoDB con éxito");
   } catch (error) {
-    console.error('La conexión a MongoDB ha fallado:', error.message);
+    console.error("La conexión a MongoDB ha fallado:", error.message);
   }
 };
 

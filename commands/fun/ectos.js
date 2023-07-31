@@ -28,12 +28,14 @@ module.exports = {
         const precioEcto90 = Math.floor(precioEcto * 0.9);
 
         // Calcula la cantidad de oro, plata y cobre para los precios
-        const calcularMonedas = (precio) => {
-          const oro = Math.floor(precio / 10000);
-          const plata = Math.floor((precio % 10000) / 100);
-          const cobre = precio % 100;
+        // Función para calcular el precio de venta de 1 Ecto al 90%
+          const calcularMonedas = (precio) => {
+            const oro = Math.floor(precio / 10000);
+            const plata = Math.floor((precio % 10000) / 100);
+            const cobre = parseInt(precio % 100); // Convertir a número entero para eliminar decimales
           return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
-        };
+          };
+
 
         // Crea el mensaje de tipo Embed con los precios
         let description = `Precio de venta de 1 Ecto al 90%: ${calcularMonedas(precioEcto90)}`;

@@ -50,6 +50,10 @@ Contributions to the project are welcome! If you find a bug or want to add a new
 
 Kunzeu Bot is a third-party application and is not affiliated with or endorsed by ArenaNet or Guild Wars 2. The bot is provided as-is and usage is at your own risk.
 
+## Contact
+
+You can contact me on Discord: Kunzeu
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

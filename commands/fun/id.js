@@ -51,7 +51,13 @@ module.exports = {
           const precioEcto = await getPrecioEcto();
           if (precioEcto !== null) {
             ectosRequeridos = Math.ceil(precioDescuento85 / (precioEcto * 0.9)); // Ectos al 85% y ajuste al 90%
-            numStacksEctos = (ectosRequeridos / 250).toFixed(2); // Número de stacks de ectos (con 4 decimales)
+            numStacksEctos = Math.floor(ectosRequeridos / 250); // Número de stacks de ectos
+            const ectosAdicionales = ectosRequeridos % 250; // Número adicional de ectos
+            description += `\n\n**Ectos a dar/recibir**: ${ectosRequeridos} <:glob:1134942274598490292>`;
+            description += `\n**Número de Stacks de Ectos**: ${numStacksEctos} stack${numStacksEctos !== 1 ? 's' : ''}`;
+            if (ectosAdicionales > 0) {
+              description += `\n**Ectos adicionales**: ${ectosAdicionales} <:glob:1134942274598490292>`;
+            }
           }
         }
 
@@ -69,7 +75,10 @@ module.exports = {
           description += `\n\n**Este es el precio del 85%**: ${calcularMonedas(precioDescuento85)}`;
           if (ectosRequeridos !== null) {
             description += `\n\n**Ectos a dar/recibir**: ${ectosRequeridos} <:glob:1134942274598490292>`;
-            description += `\n**Número de Stacks de Ectos**: ${numStacksEctos} <:glob:1134942274598490292>`;
+            description += `\n**Número de Stacks de Ectos**: ${numStacksEctos} stack${numStacksEctos !== 1 ? 's' : ''}`;
+            if (ectosAdicionales > 0) {
+              description += `\n**Ectos adicionales**: ${ectosAdicionales} <:glob:1134942274598490292>`;
+            }
           }
         }
 

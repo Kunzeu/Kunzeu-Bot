@@ -22,7 +22,7 @@ module.exports = {
       const precioMoneda = await getPrecioMoneda();
       if (precioMoneda !== null) {
         // Calcula el precio total de la cantidad de Monedas Místicas ingresada
-        const precioTotal = cantidadMonedas * precioMoneda;
+        const precioTotal = cantidadMonedas * precioMoneda * 0.9;
 
         // Calcula el precio de venta de 1 Moneda Mística al 90%
         const precioMoneda90 = Math.floor(precioMoneda * 0.9);
@@ -31,7 +31,7 @@ module.exports = {
         const calcularMonedas = (precio) => {
           const oro = Math.floor(precio / 10000);
           const plata = Math.floor((precio % 10000) / 100);
-          const cobre = precio % 100;
+          const cobre = parseInt(precio % 100); // Convertir a número entero para eliminar decimales
           return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
         };
 
@@ -42,7 +42,7 @@ module.exports = {
         const embed = {
           title: `Precio de venta de Monedas Místicas`,
           description: description,
-          color: 0x00ff00, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
+          color: 0xff0000, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
         };
 
         await interaction.reply({ embeds: [embed] });

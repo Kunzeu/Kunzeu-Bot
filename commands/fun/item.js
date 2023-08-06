@@ -46,17 +46,82 @@ const itemsMap = new Map([
   [84731, { mainName: 'Green', altNames: ['green'] }],
   [83008, { mainName: 'Yellow', altNames: ['yellow'] }],
   [19721, { mainName: 'Glob of Ectoplasm', altNames: ['Ectos', 'ecto'] }],
+  [86497, {mainName: 'Extractor', altNames: ['extractor']}],
+  [29166, {mainName: 'Tooth of Frostfang', altNames: ['Diente', 'diente']}],
+  [29167, {mainName: 'Spark', altNames: ['Chispa', 'chispa']}],
+  [29168, {mainName: 'The Bard', altNames: ['Bardo', 'bardo']}],
+  [29169, {mainName: 'Dawn', altNames: ['Alba', 'alba']}],
+  [29170, {mainName: 'Coloso', altNames: ['coloso']}],
+  [29171, {mainName: 'Carcharias', altNames: ['carcharias']}],
+  [29172, {mainName: 'Leaf of Kudzu', altNames: ['Hoja de Kudzu', 'pkudzu']}],
+  [29173, {mainName: 'The Energizer', altNames: ['Energizador', 'energizador']}],
+  [29174, {mainName: 'Chaos Gun', altNames: ['Caos', 'caos']}],
+  [29175, {mainName: 'The Hunter', altNames: ['cazador', 'Cazador']}],
+  [29176, {mainName: 'Storm', altNames: ['Tormenta', 'tormenta']}],
+  [29177, {mainName: 'The Chosen', altNames: ['Elegido', 'elegido']}],
+  [29178, {mainName: 'The Lover', altNames: ['Amante', 'amante']}],
+  [29179, {mainName: 'Rage', altNames: ['Rabia', 'rabia']}],
+  [29180, {mainName: 'The Legend', altNames: ['Leyenda', 'leyenda']}],
+  [29181, {mainName: 'Zap', altNames: ['Zas', 'zas']}],
+  [29182, {mainName: "Rodgort's Flame", altNames: ['Llama de Rodgort', 'llama']}],
+  [29183, {mainName: 'Venom', altNames: ['Veneno', 'veneno']}],
+  [29184, {mainName: 'Howl', altNames: ['Aullido', 'aullido']}],
+  [29185, {mainName: 'Dusk', altNames: ['Anochecer', 'anochecer']}],
+  [48917, {mainName: 'Toxic Focusing Crystal', altNames: ['Cristal', 'cristal']}],
+  [89216, {mainName: 'Charm of Skill', altNames: ['habilidad', 'Habilidad']}],
+  [89103, {mainName: 'Charm of Brilliance', altNames: ['Brillantez', 'brillantez']}],
+  [89103, {mainName: 'Charm of Potence', altNames: ['Potencia', 'potencia']}],
+  [89141, {mainName: 'Símbolo de mejora', altNames: ['mejora', 'Mejora']}],
+  [89182, {mainName: 'Símbolo de dolor', altNames: ['Dolor', 'dolor']}],
+  [89098, {mainName: 'Símbolo de control', altNames: ['control', 'Control']}],
+  [74326, {mainName: 'Sello superior de Transferencia', altNames: ['Transferencia', 'transferencia']}],
+  [44944, {mainName: 'Sello superior de Estallido', altNames: ['Estallido', 'estallido']}],
+  [24562, {mainName: 'Símbolo de Fechorias', altNames: ['Fechorias', 'fechorias']}],
+  [68436, {mainName: 'Sello superior de Fortaleza', altNames: ['Fortaleza', 'fortaleza']}],
+  [48911, {mainName: 'Sello superior de Tormento', altNames: ['Tormento', 'tormento']}],
+  [24609, {mainName: 'Sello superior de Condena', altNames: ['Condena', 'condena']}],
+  [44950, {mainName: 'Sello superior de Malicia ', altNames: ['Malicia', 'malicia']}],
+  [24639, {mainName: 'Sello superior de Parálisis ', altNames: ['Parálisis', 'paralisis']}],
+  [24800, {mainName: 'Runa superior de Elementalista ', altNames: ['Elementalista', 'elementalista']}],
+  [24818, {mainName: 'Runa superior de ladrón', altNames: ['Ladrón', 'ladron']}],
+  [24830, {mainName: 'Runa superior de Aventurero', altNames: ['Aventurero', 'aventurero']}],
+  [44956, {mainName: 'Runa superior de Tormento', altNames: ['Runa Tormento', 'runa tormento']}],
+  [24720, {mainName: 'Runa superior de Velocidad', altNames: ['Velocidad', 'velocidad']}],
+  [24836, {mainName: 'Runa superior de Erudito', altNames: ['Erudito', 'Schoolar']}],
+  [24833, {mainName: 'Runa superior del Pendenciero', altNames: ['Pendenciero', 'pendenciero']}],
+  [89999, {mainName: 'Runa superior de Fuegos Artificiales', altNames: ['Fuego', 'Fuego']}],
+  [24762, {mainName: 'Runa superior del Krait', altNames: ['Krait', 'Krait']}],
+  [49424, {mainName: '+1 Agony Infusion', altNames: ['+1', '+1']}],
+  [49428, {mainName: '+5 Agony Infusion', altNames: ['+5', '+5']}],  
+  [49429, {mainName: '+6 Agony Infusion', altNames: ['+6', '+6']}],
+  [49430, {mainName: '+7 Agony Infusion', altNames: ['+7', '+7']}],
+  [49431, {mainName: '+8 Agony Infusion', altNames: ['+8', '+8']}],
+  [49432, {mainName: '+9 Agony Infusion', altNames: ['+9', '+9']}],
+  [49433, {mainName: '+10 Agony Infusion', altNames: ['+10', '+10']}],
+  [49434, {mainName: '+11 Agony Infusion', altNames: ['+11', '+11']}],
+  [49438, {mainName: '+15 Agony Infusion', altNames: ['+15', '+15']}],
+  [49438, {mainName: '+16 Agony Infusion', altNames: ['+16', '+16']}],
+  [44941, {mainName: 'Watchwork Sprocket', altNames: ['Watchwork', 'Engranaje']}],
+  [73248, {mainName: 'Stabilizing Matrix', altNames: ['Matrix', 'Matrix']}],
+  [72339, {mainName: 'Sello superior de concentración', altNames: ['Vor', 'vor']}],
+  [48884, {mainName: 'Pristine Toxic Spore Sample', altNames: ['Espora', 'Pristine']}],
+  [92687, {mainName: 'Amalgamated Draconic Lodestone', altNames: ['Amal', 'amal']}],
+  [24325, {mainName: 'Destroyer Lodestone', altNames: ['Destructor', 'destructor']}],
+  [24330, {mainName: 'Crystal Lodestone', altNames: ['Cristal', 'cristal']}],
+  [70842, {mainName: 'Mordrem Lodestone', altNames: ['mordrem', 'Mordrem']}],
+  [24340, {mainName: 'Corrupted Lodestone', altNames: ['Corrupta', 'corrupta']}],
 ]);
+
 
 const excludedLegendaryItems = new Set([96978, 96722]);
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('item')
-    .setDescription('Muestra el precio de un objeto.')
+    .setDescription('Muestra el precio y la imagen de un objeto.')
     .addStringOption(option =>
       option.setName('objeto')
-        .setDescription('ID o nombre del objeto para obtener el precio.')
+        .setDescription('ID o nombre del objeto para obtener el precio y la imagen.')
         .setRequired(true)),
   async execute(interaction) {
     const input = interaction.options.getString('objeto');
@@ -92,13 +157,14 @@ module.exports = {
         // Obtiene el nombre, la rareza y la imagen del objeto
         const nombreObjeto = objetoDetails.name;
         const rarezaObjeto = objetoDetails.rarity;
+        const imagenObjeto = objetoDetails.icon;
 
         // Calcula el precio al 85% si el objeto es legendary, de lo contrario, calcula al 90%
         const descuento = rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9;
         const precioDescuento = Math.floor(precioVenta * descuento);
 
         // Calcula la cantidad de oro, plata y cobre para los precios
-          const calcularMonedas = (precio) => {
+        const calcularMonedas = (precio) => {
           const oro = Math.floor(precio / 10000);
           const plata = Math.floor((precio % 10000) / 100);
           const cobre = precio % 100;
@@ -108,11 +174,13 @@ module.exports = {
         // Calcula el número de ectos requeridos si el objeto es de rareza "Legendary"
         let ectosRequeridos = null;
         let numStacksEctos = null;
+        let ectosAdicionales = null;
         if (rarezaObjeto === 'Legendary') {
           const precioEcto = await getPrecioEcto();
           if (precioEcto !== null) {
             ectosRequeridos = Math.ceil(precioDescuento / (precioEcto * 0.9)); // Ectos al 90% del precioDescuento
-            numStacksEctos = (ectosRequeridos / 250).toFixed(2); // Número de stacks de ectos (con 2 decimales)
+            numStacksEctos = Math.floor(ectosRequeridos / 250); // Número de stacks de ectos
+            ectosAdicionales = ectosRequeridos % 250; // Ectos adicionales
           }
         }
 
@@ -123,14 +191,16 @@ module.exports = {
         description += `\n\n**Este es el precio al ${descuento * 100}%**: ${calcularMonedas(precioDescuento)}`;
 
         if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) && ectosRequeridos !== null) {
-          description += `\n\n**Ectos a dar/recibir**: ${ectosRequeridos} <:glob:1134942274598490292>`;
-          description += `\n**Número de Stacks de Ectos**: ${numStacksEctos} <:glob:1134942274598490292>`;
+          description += `\n\n**Ectos a dar/recibir**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} y ${ectosAdicionales} adicionales (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
         }
 
         const embed = {
-          title: `Precio del objeto: ${nombreObjeto}`,
+          title: `Precio e imagen del objeto: ${nombreObjeto}`,
           description: description,
-          color: 0x00ff00, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
+          color: 0x00ffff, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
+          thumbnail: {
+            url: `https://render.guildwars2.com/file/${imagenObjeto}/64.png`, // Tamaño de la imagen (64x64)
+          },
         };
 
         await interaction.reply({ embeds: [embed] });

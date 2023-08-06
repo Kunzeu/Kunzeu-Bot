@@ -34,7 +34,7 @@ To run the bot locally, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Install the necessary dependencies using `npm install`.
-3. Obtain a Guild Wars 2 API key from https://account.arena.net/applications and set it as an environment variable (`GW2_API_KEY`) or directly in the code (make sure to keep it secure).
+3. Obtain a Guild Wars 2 API key from (https://wiki.guildwars2.com/wiki/API:2) or directly in the code (make sure to keep it secure).
 4. Run the bot using `node index.js`.
 
 ## Contributions

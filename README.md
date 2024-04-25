@@ -55,7 +55,7 @@ Kunzeu Bot is a third-party application and is not affiliated with or endorsed b
 
 ## Contact
 
-You can contact me on Discord: Kunzeu
+You can contact me on Discord: [Kunzeu](https://discord.com/users/552563672162107431)
 
 ## License
 

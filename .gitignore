@@ -1,0 +1,13 @@
+postids.db
+database.db
+replit.nix
+.cache
+.config
+.replit
+.upm
+.notebook
+.node_modules
+node_modules
+keep_alive.js
+discord.js
+.env

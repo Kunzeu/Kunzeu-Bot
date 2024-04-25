@@ -181,14 +181,6 @@ const itemsMap = new Map([
   [68646, {mainName: 'Divine Lucky Envelope', altNames: ['DLE', 'Sobre de la suerte divino']}],
   [12238, {mainName: 'Lechuga', altName: ['Head of Lettuce']}],
   [24295, {mainName: 'Vial of Powerful Blood"', altName: ['Blood']}],
-  [24358, {mainName: 'Ancient Bone', altName: ['Bone']}],
-  [24351, {mainName: 'Vicious Claw', altName: ['Claw']}],
-  [24357, {mainName: 'Vicious Fang', altName: ['Fang']}],
-  [24289, {mainName: 'Armored Scale', altName: ['Scale']}],
-  [24300, {mainName: 'Elaborate Totem', altName: ['Tótem', 'Totem']}],
-  [24283, {mainName: 'Powerful Venom Sac', altName: ['Venom']}],
-  [24277, {mainName: 'Pile of Crystalline Dust', altName: ['Dust']}],
-
 ]);
 
 

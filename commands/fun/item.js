@@ -179,8 +179,8 @@ const itemsMap = new Map([
   [8920, {mainName:  'Heavy Loot Bag', altNames: ['Saco de botín pesado  ', 'Loot', 'Heavy']}],
   [70820, {mainName:  'Shard of Glory', altNames: ['Gloria', 'Esquirla de gloria  ', 'PvP']}],
   [68646, {mainName: 'Divine Lucky Envelope', altNames: ['DLE', 'Sobre de la suerte divino']}],
-  [12238, {mainName: 'Lechuga', altName: ['Head of Lettuce']}],
-  [24295, {mainName: 'Vial of Powerful Blood', altName: ['Blood']}],
+  [12238, {mainName: 'Lechuga', altNames: ['Head of Lettuce']}],
+  [24295, {mainName: 'Vial of Powerful Blood', altNames: ['Blood']}],
 ]);
 
 

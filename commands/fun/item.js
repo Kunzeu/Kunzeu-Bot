@@ -184,7 +184,7 @@ const itemsMap = new Map([
   [24358, {mainName: 'Ancient Bone', altNames: ['Bone']}],
   [24351, {mainName: 'Vicious Claw', altNames: ['Claws']}],
   [24357, {mainName: 'Vicious Fang', altNames: ['Fangs']}],
-  [24289, {mainName: 'Armored Scale', altNames: ['Scale']}],
+  [24289, {mainName: 'Armored Scale', altNames: ['Scales']}],
   [24300, {mainName: 'Elaborate Totem', altNames: ['Tótem', 'Totem']}],
   [24283, {mainName: 'Powerful Venom Sac', altNames: ['Venom']}],
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],

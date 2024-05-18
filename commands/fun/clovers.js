@@ -77,8 +77,8 @@ module.exports = {
     const totalCost = materialsRequired.ectoplasm + materialsRequired.mysticCoin;
 
     // Create Embed message with prices
-    const ltcLink = `https://www.gw2bltc.com/en/item/19976`;
-    const iconURL = await getIconURL('https://api.guildwars2.com/v2/items/19976'); 
+    const ltcLink = `https://www.gw2bltc.com/en/item/19675`;
+    const iconURL = await getIconURL('https://api.guildwars2.com/v2/items/19675'); 
 
     const embed = {
       title: `Materials required to obtain ${numMysticClovers} Mystic Clovers:`,

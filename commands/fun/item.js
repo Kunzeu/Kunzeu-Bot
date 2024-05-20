@@ -189,6 +189,7 @@ const itemsMap = new Map([
   [24300, {mainName: 'Elaborate Totem', altNames: ['Tótem', 'Totem']}],
   [24283, {mainName: 'Powerful Venom Sac', altNames: ['Venom']}],
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],
+  [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', ' amalgamada', 'ama']}],
 
 ]);
 

@@ -278,7 +278,7 @@ module.exports = {
         description += `\n\n**Price at ${descuento * 100}%**: ${calcularMonedas(precioDescuento)}`;
 
         if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) && ectosRequeridos !== null) {
-          description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : '`s'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
+          description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
         }
 
         const ltcLink = `https://www.gw2bltc.com/en/item/${objetoId}`;
@@ -292,7 +292,7 @@ module.exports = {
           fields: [
             {
               name: 'Link to GW2BLTC',
-              value: `${ltcLink}`,
+              value: ltcLink,
             },
           ],
         };

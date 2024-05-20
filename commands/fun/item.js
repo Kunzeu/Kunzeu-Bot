@@ -203,10 +203,15 @@ module.exports = {
     .addStringOption(option =>
       option.setName('item')
         .setDescription('ID or name of the object to obtain the price and the image.')
+        .setRequired(true))
+    .addIntegerOption(option =>
+      option.setName('quantity')
+        .setDescription('The quantity of the item to calculate the price for.')
         .setRequired(true)),
-  
+
   async execute(interaction) {
     const input = interaction.options.getString('item');
+    const quantity = interaction.options.getInteger('quantity') || 1;
     let objetoId = null;
 
     // Verifica si el input es un número (ID) o una cadena (nombre)
@@ -229,8 +234,8 @@ module.exports = {
 
       // Verifica si el objeto tiene información válida y precios de venta
       if (objeto && objeto.sells && objeto.buys) {
-        const precioVenta = objeto.sells.unit_price;
-        const precioCompra = objeto.buys.unit_price;
+        const precioVenta = objeto.sells.unit_price * quantity;
+        const precioCompra = objeto.buys.unit_price * quantity;
 
         // Realiza una segunda solicitud a la API para obtener los detalles del objeto, incluido su nombre, rareza e imagen
         const responseDetails = await axios.get(`https://api.guildwars2.com/v2/items/${objetoId}?lang=en`);
@@ -279,7 +284,6 @@ module.exports = {
         const ltcLink = `https://www.gw2bltc.com/en/item/${objetoId}`;
         const iconURL = await getIconURL(objetoId);
 
-        
         const embed = {
           title: `Price of the item: ${nombreObjeto}`,
           description: description,
@@ -290,7 +294,7 @@ module.exports = {
               name: 'Link to GW2BLTC',
               value: `${ltcLink}`,
             },
-            ],
+          ],
         };
 
         await interaction.reply({ embeds: [embed] });
@@ -304,16 +308,16 @@ module.exports = {
   },
 };
 
- async function getIconURL(objetoId) {
-    try {
-      const response = await axios.get(`https://api.guildwars2.com/v2/items/${objetoId}`);
-      const objetoDetails = response.data;
-      return objetoDetails.icon;
-    } catch (error) {
-      console.error('Error getting the icon URL from the API:', error.message);
-      return null;
-    }
+async function getIconURL(objetoId) {
+  try {
+    const response = await axios.get(`https://api.guildwars2.com/v2/items/${objetoId}`);
+    const objetoDetails = response.data;
+    return objetoDetails.icon;
+  } catch (error) {
+    console.error('Error getting the icon URL from the API:', error.message);
+    return null;
   }
+}
 
 // Función para obtener el precio de los ectos
 async function getPrecioEcto() {
@@ -330,13 +334,6 @@ async function getPrecioEcto() {
 // Función para encontrar la ID del objeto por nombre
 function findObjectIdByName(name) {
   for (const [id, item] of itemsMap) {
-    if (item.mainName.toLowerCase() === name.toLowerCase() || item.altNames.some(altName => altName.toLowerCase() === name.toLowerCase())) {
-      return id;
-    }
-  }
-  return null;
-}function findObjectIdByName(name) {
-  for (const [id, item] of itemsMap) {
     const mainName = item.mainName.toLowerCase();
     if (mainName === name.toLowerCase() || (item.altNames && item.altNames.some(altName => altName.toLowerCase() === name.toLowerCase()))) {
       return id;
@@ -344,3 +341,9 @@ function findObjectIdByName(name) {
   }
   return null;
 }
+
+
+
+
+
+

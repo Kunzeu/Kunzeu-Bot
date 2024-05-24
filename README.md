@@ -21,21 +21,22 @@ Kunzeu Bot is a Discord bot dedicated to Guild Wars 2 players. It utilizes the G
 
 ## Hello! Here are the instructions for use:
 
-- **`/item`:** Este comando te ayudará a ver el valor de los objetos.
-- **`/id`:** Busca objetos por su ID.
-- **`/ectos`:** Este comando muestra el valor de los ectos y te permite mostrar el cálculo del monto total.
-- **`/mc`:** Este comando muestra el valor de MC (Mystic Coins) y te permite mostrar el cálculo del monto total.
-- **`/t3`:** Este comando te ayudará a ver el valor total de los objetos de nivel T3.
-- **`/t4`:** Este comando te ayudará a ver el valor total de los objetos de nivel T4.
-- **`/t5`:** Este comando te ayudará a ver el valor total de los objetos de nivel T5.
-- **`/t6`:** Este comando te ayudará a ver el valor total de los objetos de nivel T6.
-- **`/clovers`:** Este comando te permite conocer el precio de un trébol en este momento. Actualmente, calcula el valor de un trébol.
-- **`/delivery`:** Este comando te permite ver la cantidad de objetos que tienes en entrega.
-- **`/gem`:** Este comando te permite ver el precio de las gemas (aún en prueba).
-- **`/might`:** Este comando te permite ver el precio del Regalo del Poder.
-- **`/magic`:** Este comando te permite ver el precio del Regalo de la Magia.
-- **`/apikey`:** Permite agregar o actualizar tu APIkey en el bot para usar algunos comandos.
-- **`/apidel`:** Permite eliminar tu APIkey del bot para dejar de usar algunos comandos.
+- **`/item`:** This command will help you see the value of items.
+- **`/id`:** Search for items by their ID.
+- **`/ectos`:** This command shows the value of ectos and allows you to display the total amount calculation.
+- **`/mc`:** This command shows the value of MC (Mystic Coins) and allows you to display the total amount calculation.
+- **`/t3`:** This command will help you see the total value of T3 level items.
+- **`/t4`:** This command will help you see the total value of T4 level items.
+- **`/t5`:** This command will help you see the total value of T5 level items.
+- **`/t6`:** This command will help you see the total value of T6 level items.
+- **`/clovers`:** This command lets you know the price of a clover at this moment. Currently, it calculates the value of one clover.
+- **`/delivery`:** This command allows you to see the number of items you have in delivery.
+- **`/gem`:** This command lets you see the price of gems (still in testing).
+- **`/might`:** This command lets you see the price of the Gift of Might.
+- **`/magic`:** This command lets you see the price of the Gift of Magic.
+- **`/apikey`:** Allows you to add or update your API key in the bot to use certain commands.
+- **`/apidel`:** Allows you to delete your API key from the bot to stop using certain commands.
+
 ## Installation
 
 To run the bot locally, follow these steps:

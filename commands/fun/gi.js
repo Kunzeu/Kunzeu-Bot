@@ -2,17 +2,17 @@ const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('gift')
-    .setDescription('Displays fixed prices for gifts.'),
+    .setName('gi')
+    .setDescription('Displays fixed prices for the GOM and GOJM.'),
   async execute(interaction) {
     // Definir los precios manualmente en monedas de oro
     const GIFT_PRICES = {
-      "Precio de GOJM": {
+      "Price of GOJM": {
         gold: 650, // 650 de oro
         silver: 0, // 0 de plata
         copper: 0 // 0 de cobre
       },
-      "Precio de GOM": {
+      "Price of GOM": {
         gold: 600, // 600 de oro
         silver: 0, // 0 de plata
         copper: 0 // 0 de cobre
@@ -20,15 +20,16 @@ module.exports = {
     };
 
     // Función para convertir precios en formato de monedas de oro, plata y cobre
+
     const calculateCoins = ({gold, silver, copper}) => {
-      return `${gold}g${silver.toString().padStart(2, '0')}s${copper.toString().padStart(2, '0')}c`;
+      return `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`;
     };
 
     // Crear el embed con los precios
     const embed = {
       color: 0x0099ff, // Color del embed
-      title: 'Gift Prices', // Título del embed
-      description: 'Here are the current prices for our gifts:', // Descripción del embed
+      title: 'Prices for the GOM and GOJM', // Título del embed
+      description: 'These are the current prices of the Gifts:', // Descripción del embed
       fields: [], // Campos que se agregarán a continuación
     };
 

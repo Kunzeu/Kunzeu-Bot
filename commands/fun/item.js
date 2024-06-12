@@ -250,6 +250,7 @@ module.exports = {
         // Calcula el precio al 85% si el objeto es legendary, de lo contrario, calcula al 90%
         const descuento = rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9;
         const precioDescuento = Math.floor(precioVenta * descuento);
+        const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuento); // Precio del ítem en cantidad 1
 
         // Calcula la cantidad de oro, plata y cobre para los precios
         const calcularMonedas = (precio) => {
@@ -276,7 +277,8 @@ module.exports = {
         let description = `Sell price (Sell): ${calcularMonedas(precioVenta)}\n` +
           `Buy price (Buy): ${calcularMonedas(precioCompra)}`;
 
-        description += `\n\n**Price at ${descuento * 100}%**: ${calcularMonedas(precioDescuento)}`;
+        description += `\n\n**Sell price of ${nombreObjeto} at ${descuento * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
+        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
 
         if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) && ectosRequeridos !== null) {
           description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;

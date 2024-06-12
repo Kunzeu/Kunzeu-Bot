@@ -33,7 +33,7 @@ const itemsMap = new Map([
   [96203, {mainName: "Aurene's Claw", altNames: ['daga', 'Garra de Aurene', 'Claw'] }],
   [96221, {mainName: "Aurene's Wisdom", altNames: ['cetro', 'Sabiduría de Aurene', 'Wisdom'] }],
   [96356, {mainName: "Aurene's Bite", altNames: ['mandoble', 'mand', 'Mordisco de Aurene','Bite'] }],
-  [96652, {mainName: "Aurene's Insight", altNames: ['baculo', 'Visión de Aurene', 'Insight'] }],
+  [96652, {mainName: "Aurene's Insight", altNames: ['baculo', 'Visión de Aurene', 'Insight', 'staff'] }],
   [96937, {mainName: "Aurene's Rending", altNames: ['hacha', 'Desgarramiento de Aurene', 'Rending'] }],
   [97077, {mainName: "Aurene's Wing", altNames: ['LS','ls', 'Ala de Aurene', 'Wing', 'Arco Corto'] }],
   [97099, {mainName: "Aurene's Breath", altNames: ['antorcha', 'ant', 'Aliento de Aurene', 'Breath'] }],

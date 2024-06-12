@@ -191,7 +191,7 @@ const itemsMap = new Map([
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', ' amalgamada', 'ama']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
-  [19976, {mainName: 'Ecto', altNames: ['Ectos', 'Globs']}],
+  [19721, {mainName: 'Ecto', altNames: ['Ectos', 'Globs']}],
 
 ]);
 

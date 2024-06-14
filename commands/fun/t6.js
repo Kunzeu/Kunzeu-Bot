@@ -60,10 +60,11 @@ module.exports = {
         title: 'Total price of materials T6',
         description: `The total price at 100% of the T6 materials is: ${calcularMonedas(totalPrecioVenta)}.\n` +
                      `The total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.\n\n` +
-                     `**The total price for ${totalQuantity} materials at 90% is:** ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
+                     `The total price for ${totalQuantity} materials at 100% is: ${calcularMonedas(totalPrecioVentaUser)}.\n` +
+                     `The total price for ${totalQuantity} materials at 90% is: ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
         color: 0xffc0cb, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
         thumbnail: {
-          url: 'https://render.guildwars2.com/file/043E2BBA270F381870F1B45E7C09C098CAFE3D14/66996.png'
+          url: 'https://cdn.discordapp.com/attachments/903356166560686190/1251039149998477312/ezgif-4-68341b97cb.gif?ex=666d2080&is=666bcf00&hm=bfcbb52c92c05c09f4d9c7421aa533667d603ed409aad64e1f0efa42de49f096&'
         }
       };
 

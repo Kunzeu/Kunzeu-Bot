@@ -55,7 +55,6 @@ module.exports = {
         title: 'Total price of materials T6',
         description: `The total price at 100% of the T6 materials is: ${calcularMonedas(totalPrecioVenta)}.\n` +
                      `The total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.\n\n` +
-                     `The total price for ${userQuantity} materials at 100% is: ${calcularMonedas(totalPrecioVentaUser)}.\n` +
                      `The total price for ${userQuantity} materials at 90% is: ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
         color: 0xffc0cb, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
       };

@@ -56,10 +56,8 @@ module.exports = {
         title: 'Total price of materials T6',
         description: `The total price at 100% of the T6 materials is: ${calcularMonedas(totalPrecioVenta)}.\n` +
                      `The total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.\n\n` +
-                     `The total price for ${totalQuantity} materials at 100% is: ${calcularMonedas(totalPrecioVentaUser)}.\n` +
                      `The total price for ${totalQuantity} materials at 90% is: ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
         color: 0xffc0cb, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
-        thumbnail: { url: 'https://cdn.discordapp.com/attachments/1063915155211173980/1251006291086676038/s-l1600.jpg?ex=666d01e6&is=666bb066&hm=653fd1d9a685beb419a7f846558dbb261905315b9c40b3f880a5faa30e762e78&'},
         
       };
 

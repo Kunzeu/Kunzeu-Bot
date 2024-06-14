@@ -7,7 +7,7 @@ module.exports = {
     .setDescription('Calculate the total price of materials T6.')
     .addIntegerOption(option => 
       option.setName('quantity')
-        .setDescription('Quantity of materials to calculate the price for')
+        .setDescription('Multiplier for the stack size to calculate the price')
         .setRequired(true)
     ),
 
@@ -15,6 +15,7 @@ module.exports = {
     const itemIds = [24295, 24358, 24351, 24357, 24289, 24300, 24283, 24277];
     const stackSize = 250;
     const userQuantity = interaction.options.getInteger('quantity');
+    const totalQuantity = stackSize * userQuantity;
 
     try {
       let totalPrecioVenta = 0;
@@ -30,17 +31,17 @@ module.exports = {
       // Calcula el 90% del precio total
       const precioTotal90 = totalPrecioVenta * 0.9;
 
-      // Calcula el precio basado en la cantidad proporcionada por el usuario
+      // Calcula el precio basado en la cantidad total calculada
       let totalPrecioVentaUser = 0;
 
       await Promise.all(itemIds.map(async (itemId) => {
         const objeto = await getGw2ApiData(`commerce/prices/${itemId}`, 'en');
         if (objeto && objeto.sells) {
-          totalPrecioVentaUser += objeto.sells.unit_price * userQuantity;
+          totalPrecioVentaUser += objeto.sells.unit_price * totalQuantity;
         }
       }));
 
-      // Calcula el 90% del precio total basado en la cantidad proporcionada por el usuario
+      // Calcula el 90% del precio total basado en la cantidad total calculada
       const precioTotalUser90 = totalPrecioVentaUser * 0.9;
 
       // Calcula el número de monedas (oro, plata y cobre) y agrega los emotes correspondientes
@@ -55,8 +56,11 @@ module.exports = {
         title: 'Total price of materials T6',
         description: `The total price at 100% of the T6 materials is: ${calcularMonedas(totalPrecioVenta)}.\n` +
                      `The total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.\n\n` +
-                     `The total price for ${userQuantity} materials at 90% is: ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
+                     `The total price for ${totalQuantity} materials at 100% is: ${calcularMonedas(totalPrecioVentaUser)}.\n` +
+                     `The total price for ${totalQuantity} materials at 90% is: ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
         color: 0xffc0cb, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
+        thumbnail: { url: 'https://cdn.discordapp.com/attachments/1063915155211173980/1251006291086676038/s-l1600.jpg?ex=666d01e6&is=666bb066&hm=653fd1d9a685beb419a7f846558dbb261905315b9c40b3f880a5faa30e762e78&'},
+        
       };
 
       await interaction.reply({ embeds: [embed] });

@@ -40,7 +40,11 @@ module.exports = {
         title: 'Total price of materials T5',
         description: `The total price at 100% of the T5 materials (except for the item Pile of Incandescent Dust) is: ${calcularMonedas(totalPrecioVenta)}.\nThe total price at 90% of the T5 materials (except for the item Pile of Incandescent Dust) is: ${calcularMonedas(precioTotal90.toFixed(0))}.`,
         color: 2593204, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
+        thumbnail: {
+          url: 'https://s4.ezgif.com/tmp/ezgif-4-d0be2adff1.gif'
+        }
       };
+      
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {

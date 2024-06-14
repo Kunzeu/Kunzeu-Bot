@@ -53,6 +53,9 @@ module.exports = {
         title: 'Total Price of Condensed Magic',
         description: `The total price at 100% of Condensed Magic is: ${calculateCoins(totalSellPrice)}.\nThe total price at 90% of Condensed Magic is: ${calculateCoins(totalPrice90.toFixed(0))}.`,
         color: 4746549, // Embed border color (optional, you can change it or remove it)
+        thumbnail: {
+          url: 'https://render.guildwars2.com/file/09F42753049B20A54F6017B1F26A9447613016FE/1302179.png'
+        }
       };
 
       await interaction.reply({ embeds: [embed] });

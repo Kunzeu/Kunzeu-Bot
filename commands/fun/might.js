@@ -53,6 +53,9 @@ module.exports = {
         title: 'Total Price of Condensed Might',
         description: `The total price at 100% of Condensed Might is: ${calculateCoins(totalSellPrice)}.\nThe total price at 90% of Condensed Might is: ${calculateCoins(totalPrice90.toFixed(0))}.`,
         color: 7154499, // Embed border color (optional, you can change it or remove it)
+        thumbnail: {
+          url: 'https://render.guildwars2.com/file/CCA4C2F8AF79D2EB0CFF381E3DDA3EA792BA7412/1302180.png'
+        }
       };
 
       await interaction.reply({ embeds: [embed] });

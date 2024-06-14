@@ -36,6 +36,9 @@ module.exports = {
         title: 'Total Price of T4 Materials',
         description: `The total price at 100% of T4 materials is: ${calculateCoins(totalSellPrice)}.\nThe total price at 90% of T4 materials is: ${calculateCoins(totalPrice90.toFixed(0))}.`,
         color: 0x00ff00, // Embed border color (optional, you can change it or remove it)
+        thumbnail: {
+          url: 'https://s4.ezgif.com/tmp/ezgif-4-8fdc4ec056.gif'
+        }
       };
 
       await interaction.reply({ embeds: [embed] });

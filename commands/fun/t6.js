@@ -4,18 +4,24 @@ const { getGw2ApiData } = require('../utility/api.js'); // Ajusta la ruta según
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('t6')
-    .setDescription('Calculate the total price of materials T6.'),
+    .setDescription('Calculate the total price of materials T6.')
+    .addIntegerOption(option => 
+      option.setName('quantity')
+        .setDescription('Quantity of materials to calculate the price for')
+        .setRequired(true)
+    ),
 
   async execute(interaction) {
     const itemIds = [24295, 24358, 24351, 24357, 24289, 24300, 24283, 24277];
     const stackSize = 250;
+    const userQuantity = interaction.options.getInteger('quantity');
 
     try {
       let totalPrecioVenta = 0;
 
       // Llama a la función para obtener el precio de venta de cada objeto
       await Promise.all(itemIds.map(async (itemId) => {
-      const objeto = await getGw2ApiData(`commerce/prices/${itemId}`, 'en');
+        const objeto = await getGw2ApiData(`commerce/prices/${itemId}`, 'en');
         if (objeto && objeto.sells) {
           totalPrecioVenta += objeto.sells.unit_price * stackSize;
         }
@@ -23,6 +29,19 @@ module.exports = {
 
       // Calcula el 90% del precio total
       const precioTotal90 = totalPrecioVenta * 0.9;
+
+      // Calcula el precio basado en la cantidad proporcionada por el usuario
+      let totalPrecioVentaUser = 0;
+
+      await Promise.all(itemIds.map(async (itemId) => {
+        const objeto = await getGw2ApiData(`commerce/prices/${itemId}`, 'en');
+        if (objeto && objeto.sells) {
+          totalPrecioVentaUser += objeto.sells.unit_price * userQuantity;
+        }
+      }));
+
+      // Calcula el 90% del precio total basado en la cantidad proporcionada por el usuario
+      const precioTotalUser90 = totalPrecioVentaUser * 0.9;
 
       // Calcula el número de monedas (oro, plata y cobre) y agrega los emotes correspondientes
       const calcularMonedas = (precio) => {
@@ -34,7 +53,10 @@ module.exports = {
 
       const embed = {
         title: 'Total price of materials T6',
-        description: `The total price at 100% of the T6 materials is: ${calcularMonedas(totalPrecioVenta)}.\nThe total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.`,
+        description: `The total price at 100% of the T6 materials is: ${calcularMonedas(totalPrecioVenta)}.\n` +
+                     `The total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.\n\n` +
+                     `The total price for ${userQuantity} materials at 100% is: ${calcularMonedas(totalPrecioVentaUser)}.\n` +
+                     `The total price for ${userQuantity} materials at 90% is: ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
         color: 0xffc0cb, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
       };
 

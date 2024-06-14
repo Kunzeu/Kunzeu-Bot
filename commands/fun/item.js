@@ -12,7 +12,7 @@ const itemsMap = new Map([
   [30688, {mainName: 'The Minstrel', altNames: ['Juglar'] }],
   [30689, {mainName: 'Eternity', altNames: ['Eternidad', 'eter'] }],
   [30690, {mainName: 'The Juggernaut', altNames: ['Juggernaut','jug'] }],
-  [30691, {mainName: "Kamohoali'i Kotaki", altNames: ['Kotaki', ' lanza'] }],
+  [30691, {mainName: "Kamohoali'i Kotaki", altNames: ['Kotaki', 'lanza'] }],
   [30692, {mainName: 'The Moot', altNames: ['Festin','fes'] }],
   [30693, {mainName: 'Quip', altNames: ['Gracia'] }],
   [30694, {mainName: 'The Predator', altNames: ['Depredador', 'Pred'] }],

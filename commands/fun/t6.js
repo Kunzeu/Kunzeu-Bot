@@ -40,11 +40,7 @@ module.exports = {
         totalPrecioVenta += unitPrice * baseStackSize;
         totalPrecioVentaUser += unitPrice * totalQuantity;
 
-        return {
-          name: itemData.name,
-          icon: itemData.icon,
-          unitPrice: unitPrice
-        };
+      
       }));
 
       const precioTotal90 = totalPrecioVenta * 0.9;
@@ -69,7 +65,8 @@ module.exports = {
                      `The total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.\n\n` +
                      `**The total price for ${totalQuantity} materials at 90% is:** ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
         color: 0xffc0cb, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
-        fields: embedFields
+        thumbnail: { url: 'https://render.guildwars2.com/file/043E2BBA270F381870F1B45E7C09C098CAFE3D14/66996.png'},
+        
       };
 
       await interaction.reply({ embeds: [embed] });

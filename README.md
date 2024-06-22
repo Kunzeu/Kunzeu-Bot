@@ -12,19 +12,17 @@ Kunzeu Bot is a Discord bot dedicated to Guild Wars 2 players. It utilizes the G
 
 ## Screenshots
 
-<img src="https://cdn.discordapp.com/attachments/1112034916478222467/1137553827994816642/image.png" alt="Screenshot 1" style="margin-bottom: 20px;">
+<img src="https://cdn.discordapp.com/attachments/1178687540232978454/1254199508775207022/image.png?ex=66789fd0&is=66774e50&hm=b6c7fb37a3c6ee63d3459a4c165a4200c4ba797a6c37d6ef4d0570bebbcfe8c4&" alt="Screenshot 1" style="margin-bottom: 20px;">
 
-<img src="https://cdn.discordapp.com/attachments/1112034916478222467/1136506925320785920/image.png" alt="Screenshot 2" style="margin-bottom: 20px;">
+<img src="https://cdn.discordapp.com/attachments/1178687540232978454/1254199509085323384/image.png?ex=66789fd0&is=66774e50&hm=296f45664591b04f0e776b350a5f53a77455928a600ab7f25a25650d4f9bdb69&" alt="Screenshot 2" style="margin-bottom: 20px;">
 
-<img src="https://cdn.discordapp.com/attachments/1112034916478222467/1136462131370401913/image.png" alt="Screenshot 3" style="margin-bottom: 20px;">
+<img src="https://cdn.discordapp.com/attachments/1178687540232978454/1254199509488242688/image.png?ex=66789fd0&is=66774e50&hm=2dca3a5353f95c859133d61944e73cbed7ac51cf57154f3cf086a66d220d7699&" alt="Screenshot 3" style="margin-bottom: 20px;">
 
 
 ## Hello! Here are the instructions for use:
 
 - **`/item`:** This command will help you see the value of items.
 - **`/id`:** Search for items by their ID.
-- **`/ectos`:** This command shows the value of ectos and allows you to display the total amount calculation.
-- **`/mc`:** This command shows the value of MC (Mystic Coins) and allows you to display the total amount calculation.
 - **`/t3`:** This command will help you see the total value of T3 level items.
 - **`/t4`:** This command will help you see the total value of T4 level items.
 - **`/t5`:** This command will help you see the total value of T5 level items.

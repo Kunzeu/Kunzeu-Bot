@@ -38,7 +38,7 @@ module.exports = {
 
       const embed = {
         title: 'Total price of materials T5',
-        description: `The total price at 100% of the T5 materials (except for the item Pile of Incandescent Dust) is: ${calcularMonedas(totalPrecioVenta)}.\nThe total price at 90% of the T5 materials (except for the item Pile of Incandescent Dust) is: ${calcularMonedas(precioTotal90.toFixed(0))}.`,
+        description: `The total price at 100% of the T5 materials (without Pile of Incandescent Dust) is: ${calcularMonedas(totalPrecioVenta)}.\nThe total price at 90% of the T5 materials (without Pile of Incandescent Dust) is: ${calcularMonedas(precioTotal90.toFixed(0))}.`,
         color: 2593204, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
         thumbnail: {
           url: 'https://cdn.discordapp.com/attachments/1178687540232978454/1254195282900553839/ezgif.com-animated-gif-maker.gif?ex=66789be1&is=66774a61&hm=0a06be2e3cd4323de0aec696e721cbe862c80bec8cb288bf6cacfed07637e047&'

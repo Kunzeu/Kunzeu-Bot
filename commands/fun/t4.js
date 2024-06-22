@@ -37,7 +37,7 @@ module.exports = {
         description: `The total price at 100% of T4 materials is: ${calculateCoins(totalSellPrice)}.\nThe total price at 90% of T4 materials is: ${calculateCoins(totalPrice90.toFixed(0))}.`,
         color: 0x00ff00, // Embed border color (optional, you can change it or remove it)
         thumbnail: {
-          url: 'hhttps://cdn.discordapp.com/attachments/1178687540232978454/1254194723107766423/ezgif.com-animated-gif-maker.gif?ex=66789b5b&is=667749db&hm=776b9d0567a88c8d5df6c64ab715a7f6b3101402e67ce1fa178e97e4c17beb89&'
+          url: 'https://cdn.discordapp.com/attachments/1178687540232978454/1254194723107766423/ezgif.com-animated-gif-maker.gif?ex=66789b5b&is=667749db&hm=776b9d0567a88c8d5df6c64ab715a7f6b3101402e67ce1fa178e97e4c17beb89&'
         }
       };
 

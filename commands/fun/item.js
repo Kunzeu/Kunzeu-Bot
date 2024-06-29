@@ -267,6 +267,8 @@ module.exports = {
         let numStacksEctos = null;
         let ectosAdicionales = null;
         let monedasMisticasRequeridas = null;
+        let numStacksMonedas = null;
+        let monedasAdicionales = null;
 
         if (rarezaObjeto === 'Legendary') {
           const precioEcto = await getPrecioEcto();
@@ -278,6 +280,8 @@ module.exports = {
           }
           if (precioMonedaMistica !== null) {
             monedasMisticasRequeridas = Math.ceil(precioDescuento / (precioMonedaMistica * 0.9)); // Monedas Místicas al 90% del precioDescuento
+            numStacksMonedas = Math.floor(monedasMisticasRequeridas / 250); // Número de stacks de monedas místicas
+            monedasAdicionales = monedasMisticasRequeridas % 250; // Monedas adicionales
           }
         }
 
@@ -289,11 +293,12 @@ module.exports = {
         description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
 
         if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId)) {
+          description += `\n\n**Price at 90% for ${nombreObjeto}**: ${calcularMonedas(precioVenta * 0.9)}`;
           if (ectosRequeridos !== null) {
             description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
           }
           if (monedasMisticasRequeridas !== null) {
-            description += `\n\n**Monedas Místicas to give/receive**: ${monedasMisticasRequeridas} <:mystic_coin:19976>`;
+            description += `\n\n**Mystic Coins to give/receive**: ${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional (Total: ${monedasMisticasRequeridas} <:mystic_coin:19976>)`;
           }
         }
 
@@ -354,7 +359,7 @@ async function getPrecioMonedaMistica() {
     const monedaMistica = response.data;
     return monedaMistica.sells.unit_price;
   } catch (error) {
-    console.error('Error when getting the price of the Monedas Místicas from the API:', error.message);
+    console.error('Error when getting the price of the Mystic Coins from the API:', error.message);
     return null;
   }
 }

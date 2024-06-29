@@ -293,7 +293,11 @@ module.exports = {
         description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
 
         if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId)) {
-          description += `\n\n**Price at 90% for ${nombreObjeto}**: ${calcularMonedas(precioVenta * 0.9)}`;
+          const precioEcto = await getPrecioEcto();
+          const precioMonedaMistica = await getPrecioMonedaMistica();
+          description += `\n\n**Price of Ectos at 90%**: ${calcularMonedas(precioEcto * 0.9)}`;
+          description += `\n\n**Price of Mystic Coins at 90%**: ${calcularMonedas(precioMonedaMistica * 0.9)}`;
+
           if (ectosRequeridos !== null) {
             description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
           }

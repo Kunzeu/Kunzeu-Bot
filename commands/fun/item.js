@@ -251,14 +251,26 @@ module.exports = {
 
         // Calcula el precio al 85% si el objeto es legendary, de lo contrario, calcula al 90%
         const descuento = rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9;
-        const precioDescuento = Math.floor(precioVenta * descuento);
-        const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuento); // Precio del ítem en cantidad 1
+        const precioDescuento = Math.round(precioVenta * descuento);
+        const precioDescuentoUnidad = Math.round(objeto.sells.unit_price * descuento); // Precio del ítem en cantidad 1
 
         // Calcula la cantidad de oro, plata y cobre para los precios
         const calcularMonedas = (precio) => {
           const oro = Math.floor(precio / 10000);
           const plata = Math.floor((precio % 10000) / 100);
-          const cobre = precio % 100;
+          let cobre = Math.round(precio % 100);
+
+          // Redondeo adicional para los cobres si el decimal es >= 5
+          if (cobre >= 100) {
+            plata += 1;
+            cobre = 0;
+          }
+
+          if (plata >= 100) {
+            oro += 1;
+            plata = 0;
+          }
+
           return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
         };
 
@@ -295,8 +307,8 @@ module.exports = {
         if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId)) {
           const precioEcto = await getPrecioEcto();
           const precioMonedaMistica = await getPrecioMonedaMistica();
-          description += `\n\n**Price of Ectos at 90%**: ${calcularMonedas(precioEcto * 0.9)}`;
-          description += `\n\n**Price of Mystic Coins at 90%**: ${calcularMonedas(precioMonedaMistica * 0.9)}`;
+          description += `\n\n**Price of Ectos at 90%**: ${calcularMonedas(Math.round(precioEcto * 0.9))}`;
+          description += `\n\n**Price of Mystic Coins at 90%**: ${calcularMonedas(Math.round(precioMonedaMistica * 0.9))}`;
 
           if (ectosRequeridos !== null) {
             description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;

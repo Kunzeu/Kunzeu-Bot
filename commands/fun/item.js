@@ -189,9 +189,10 @@ const itemsMap = new Map([
   [24300, {mainName: 'Elaborate Totem', altNames: ['Tótem', 'Totem']}],
   [24283, {mainName: 'Powerful Venom Sac', altNames: ['Venom']}],
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],
-  [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', ' amalgamada', 'ama']}],
+  [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', 'amalgamada']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
   [19721, {mainName: 'Ecto', altNames: ['Ectos', 'Globs']}],
+  
 
 ]);
 
@@ -261,16 +262,22 @@ module.exports = {
           return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
         };
 
-        // Calcula el número de ectos requeridos si el objeto es de rareza "Legendary"
+        // Calcula la cantidad de ectos y Monedas Místicas requeridos si el objeto es de rareza "Legendary"
         let ectosRequeridos = null;
         let numStacksEctos = null;
         let ectosAdicionales = null;
+        let monedasMisticasRequeridas = null;
+
         if (rarezaObjeto === 'Legendary') {
           const precioEcto = await getPrecioEcto();
+          const precioMonedaMistica = await getPrecioMonedaMistica();
           if (precioEcto !== null) {
             ectosRequeridos = Math.ceil(precioDescuento / (precioEcto * 0.9)); // Ectos al 90% del precioDescuento
             numStacksEctos = Math.floor(ectosRequeridos / 250); // Número de stacks de ectos
             ectosAdicionales = ectosRequeridos % 250; // Ectos adicionales
+          }
+          if (precioMonedaMistica !== null) {
+            monedasMisticasRequeridas = Math.ceil(precioDescuento / (precioMonedaMistica * 0.9)); // Monedas Místicas al 90% del precioDescuento
           }
         }
 
@@ -281,8 +288,13 @@ module.exports = {
         description += `\n\n**Sell price of ${nombreObjeto} at ${descuento * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
         description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
 
-        if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) && ectosRequeridos !== null) {
-          description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
+        if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId)) {
+          if (ectosRequeridos !== null) {
+            description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
+          }
+          if (monedasMisticasRequeridas !== null) {
+            description += `\n\n**Monedas Místicas to give/receive**: ${monedasMisticasRequeridas} <:mystic_coin:19976>`;
+          }
         }
 
         const ltcLink = `https://www.gw2bltc.com/en/item/${objetoId}`;
@@ -335,6 +347,18 @@ async function getPrecioEcto() {
   }
 }
 
+// Función para obtener el precio de las Monedas Místicas
+async function getPrecioMonedaMistica() {
+  try {
+    const response = await axios.get('https://api.guildwars2.com/v2/commerce/prices/19976');
+    const monedaMistica = response.data;
+    return monedaMistica.sells.unit_price;
+  } catch (error) {
+    console.error('Error when getting the price of the Monedas Místicas from the API:', error.message);
+    return null;
+  }
+}
+
 // Función para encontrar la ID del objeto por nombre
 function findObjectIdByName(name) {
   for (const [id, item] of itemsMap) {
@@ -345,9 +369,3 @@ function findObjectIdByName(name) {
   }
   return null;
 }
-
-
-
-
-
-

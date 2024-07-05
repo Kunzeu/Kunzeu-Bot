@@ -10,7 +10,8 @@ const timezones = {
   "🇩🇴": "America/Santo_Domingo",
   "🇨🇴": "America/Bogota",
   "🇵🇪": "America/Lima",
-  "🇲🇽": "America/Mexico_City"
+  "🇲🇽": "America/Mexico_City",
+  "🇸🇻": "America/El_Salvador"
 };
 
 const line3Emoji = '<:line3:1254465366827208826>'; // Emoji personalizado

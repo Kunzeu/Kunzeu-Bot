@@ -48,7 +48,7 @@ const itemsMap = new Map([
   [85016, {mainName: 'Blue', altNames: ['blue'] }],
   [84731, {mainName: 'Green', altNames: ['green'] }],
   [83008, {mainName: 'Yellow', altNames: ['yellow'] }],
-  [19721, {mainName: 'Glob of Ectoplasm', altNames: ['Ectos'] }],
+  [19721, {mainName: 'Glob of Ectoplasm', altNames: ['Ectos', 'Ecto'] }],
   [86497, {mainName: 'Extractor', altNames: ['extractor']}],
   [29166, {mainName: 'Tooth of Frostfang', altNames: ['Diente']}],
   [29167, {mainName: 'Spark', altNames: ['Chispa']}],
@@ -191,7 +191,7 @@ const itemsMap = new Map([
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', 'amalgamada']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
-  [19721, {mainName: 'Ecto', altNames: ['Ectos', 'Globs']}],
+  [89271, {mainName: 'Pile of Lucent Crystal', altNames: ['Lucent', 'Cristal']}],
   
 
 ]);

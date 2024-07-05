@@ -192,16 +192,16 @@ const itemsMap = new Map([
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', 'amalgamada']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
   [89271, {mainName: 'Pile of Lucent Crystal', altNames: ['Lucent']}],
-  [24294, {mainName: 'Vial of Potent Blood', altName: ['Vial de sangre potente', 'Vial']}],
-  [24341, {mainName: 'Large Bone', altName: ['Hueso', 'Hueso grande']}],
-  [24350, {mainName: 'Large Claw', altName: ['Garra grande']}],
-  [24356, {mainName: 'Large Fang', altName: ['Colmillo grande']}],
-  [24288, {mainName: 'Large Scale', altName: ['Escama grande']}],
-  [24299, {mainName: 'Intricate Totem', altName: ['Tótem intrincado', 'Totem intrincado']}],
-  [24282, {mainName: 'Potent Venom Sac', altName: ['Vesícula de veneno potente', 'Vesícula']}],
-  [19748, {mainName: 'Resto de seda', altName: ['Silk Scrap', 'seda']}],
-  [19729, {mainName: 'Trozo de cuero grueso', altName: ['cuero', 'Leather', 'Thick Leather Section']}],
-  [19722, {mainName: 'Elder Wood Log', altName: ['Leño de madera ancestral', 'Wood', 'Log']}]
+  [24294, {mainName: 'Vial of Potent Blood', altNames: ['Vial de sangre potente', 'Vial']}],
+  [24341, {mainName: 'Large Bone', altNames: ['Hueso', 'Hueso grande']}],
+  [24350, {mainName: 'Large Claw', altNames: ['Garra grande']}],
+  [24356, {mainName: 'Large Fang', altNames: ['Colmillo grande']}],
+  [24288, {mainName: 'Large Scale', altNames: ['Escama grande']}],
+  [24299, {mainName: 'Intricate Totem', altNames: ['Tótem intrincado', 'Totem intrincado']}],
+  [24282, {mainName: 'Potent Venom Sac', altNames: ['Vesícula de veneno potente', 'Vesícula']}],
+  [19748, {mainName: 'Resto de seda', altNames: ['Silk Scrap', 'seda']}],
+  [19729, {mainName: 'Trozo de cuero grueso', altNames: ['cuero', 'Leather', 'Thick Leather Section']}],
+  [19722, {mainName: 'Elder Wood Log', altNames: ['Leño de madera ancestral', 'Wood', 'Log']}]
   
 
 ]);

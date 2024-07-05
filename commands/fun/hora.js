@@ -1,8 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js');
 const axios = require('axios');
+const moment = require('moment-timezone');
 
 const timezones = {
-  "🇪🇸": "Europe/Madrid",
+  "🇪🇸 (Madrid)": "Europe/Madrid",
+  "🇪🇸 (Canarias)": "Atlantic/Canary",
   "🇦🇷": "America/Argentina/Buenos_Aires",
   "🇨🇱": "America/Santiago",
   "🇩🇴": "America/Santo_Domingo",
@@ -11,18 +13,24 @@ const timezones = {
   "🇲🇽": "America/Mexico_City"
 };
 
+const line3Emoji = '<:line3:1254465366827208826>'; // Emoji personalizado
+
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('time')
+    .setName('hora')
     .setDescription('Muestra la hora actual en diferentes países'),
 
   async execute(interaction) {
+    const now = moment.utc(); // Obtener la hora actual en UTC
+
     const responses = await Promise.all(
       Object.entries(timezones).map(async ([flag, timezone]) => {
         try {
-          const response = await axios.get(`http://worldtimeapi.org/api/timezone/${timezone}`);
-          const currentTime = new Date(response.data.datetime).toLocaleString('es-ES', { timeZone: timezone, hour: '2-digit', minute: '2-digit' });
-          return `${flag} ${currentTime}`;
+          const dateTimeInZone = now.clone().tz(timezone); // Obtener la fecha y hora en la zona horaria especificada
+
+          const formattedTime = dateTimeInZone.format('HH:mm'); // Formatear solo la hora en formato HH:mm
+
+          return `${flag} ${formattedTime}`;
         } catch (error) {
           console.error(`Error fetching time for ${timezone}:`, error);
           return `${flag} N/A`;
@@ -30,6 +38,6 @@ module.exports = {
       })
     );
 
-    await interaction.reply(responses.join(' ▪️ '));
+    await interaction.reply(responses.join(` ${line3Emoji} `));
   }
 };

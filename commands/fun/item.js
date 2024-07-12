@@ -201,7 +201,9 @@ const itemsMap = new Map([
   [24282, {mainName: 'Potent Venom Sac', altNames: ['Vesícula de veneno potente', 'Vesícula']}],
   [19748, {mainName: 'Resto de seda', altNames: ['Silk Scrap', 'seda']}],
   [19729, {mainName: 'Trozo de cuero grueso', altNames: ['cuero', 'Leather', 'Thick Leather Section']}],
-  [19722, {mainName: 'Elder Wood Log', altNames: ['Leño de madera ancestral', 'Wood', 'Log']}]
+  [19722, {mainName: 'Elder Wood Log', altNames: ['Leño de madera ancestral', 'Wood', 'Log']}],
+  [19700, {mainName: 'Mithril Ore', altNames: ['Mineral de mithril', 'Ore', 'Mithril']}]
+
   
 
 ]);

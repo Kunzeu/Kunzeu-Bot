@@ -41,8 +41,8 @@ module.exports = {
     }
 
     // Agregar los enlaces al embed
-    embed.fields.push({ name: '', value: '[Link to GOJM](https://wiki.guildwars2.com/wiki/Gift_of_Jade_Mastery)', inline: true });
-    embed.fields.push({ name: '', value: '[Link to GOM](https://wiki.guildwars2.com/wiki/Gift_of_Mastery)', inline: true });
+    embed.fields.push({ name: '', value: '[Link to GOJM](https://guaridadevortus.com/comprar-vender-gojm/)', inline: true });
+    embed.fields.push({ name: '', value: '[Link to GOM](https://guaridadevortus.com/como-vender-dones-del-dominio-gom/)', inline: true });
 
     // Enviar el embed en respuesta al comando
     await interaction.reply({ embeds: [embed] });

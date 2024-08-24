@@ -189,7 +189,6 @@ const itemsMap = new Map([
   [24300, {mainName: 'Elaborate Totem', altNames: ['Tótem', 'Totem']}],
   [24283, {mainName: 'Powerful Venom Sac', altNames: ['Venoms', 'sac']}],
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],
-<<<<<<< HEAD
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', 'amalgamada']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
   [89271, {mainName: 'Pile of Lucent Crystal', altNames: ['Lucent']}],
@@ -204,15 +203,10 @@ const itemsMap = new Map([
   [19729, {mainName: 'Trozo de cuero grueso', altNames: ['cuero', 'Leather', 'Thick Leather Section']}],
   [19722, {mainName: 'Elder Wood Log', altNames: ['Leño de madera ancestral', 'Wood', 'Log']}],
   [19700, {mainName: 'Mithril Ore', altNames: ['Mineral de mithril', 'Ore', 'Mithril']}]
-
-  
-=======
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', ' amalgamada', 'ama']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
-<<<<<<< HEAD
->>>>>>> cb8cff0 (Mc add to items)
-=======
->>>>>>> a23e466 (Mc add to items)
+  [12134, {mainName: 'Carrot', altNames: ['Zanahoria']}],
+
 
 ]);
 
@@ -322,7 +316,7 @@ module.exports = {
             description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
           }
           if (monedasMisticasRequeridas !== null) {
-            description += `\n\n**MC to give/receive**: ${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional (Total: ${monedasMisticasRequeridas} <:mc:1256636510455992390>)`;
+            description += `\n\n**MC to give/receive**: ${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional (Total: ${monedasMisticasRequeridas} <:mc:1276710341954502678>)`;
           }
         }
 

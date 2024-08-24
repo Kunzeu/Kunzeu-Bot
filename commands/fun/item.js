@@ -209,7 +209,10 @@ const itemsMap = new Map([
 =======
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', ' amalgamada', 'ama']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
+<<<<<<< HEAD
 >>>>>>> cb8cff0 (Mc add to items)
+=======
+>>>>>>> a23e466 (Mc add to items)
 
 ]);
 

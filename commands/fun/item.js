@@ -203,8 +203,6 @@ const itemsMap = new Map([
   [19729, {mainName: 'Trozo de cuero grueso', altNames: ['cuero', 'Leather', 'Thick Leather Section']}],
   [19722, {mainName: 'Elder Wood Log', altNames: ['Leño de madera ancestral', 'Wood', 'Log']}],
   [19700, {mainName: 'Mithril Ore', altNames: ['Mineral de mithril', 'Ore', 'Mithril']}]
-  [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', ' amalgamada', 'ama']}],
-  [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
   [12134, {mainName: 'Carrot', altNames: ['Zanahoria']}],
 
 

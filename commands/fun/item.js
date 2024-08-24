@@ -181,18 +181,18 @@ const itemsMap = new Map([
   [70820, {mainName:  'Shard of Glory', altNames: ['Gloria', 'Esquirla de gloria  ', 'PvP']}],
   [68646, {mainName: 'Divine Lucky Envelope', altNames: ['DLE', 'Sobre de la suerte divino']}],
   [12238, {mainName: 'Lechuga', altNames: ['Head of Lettuce']}],
-  [24295, {mainName: 'Vial of Powerful Blood', altNames: ['Blood']}],
-  [24358, {mainName: 'Ancient Bone', altNames: ['Bone']}],
-  [24351, {mainName: 'Vicious Claw', altNames: ['Claws']}],
+  [24295, {mainName: 'Vial of Powerful Blood', altNames: ['Blood', 'vial','sangre']}],
+  [24358, {mainName: 'Ancient Bone', altNames: ['Bone','Ancient']}],
+  [24351, {mainName: 'Vicious Claw', altNames: ['Claws', 'Vicious']}],
   [24357, {mainName: 'Vicious Fang', altNames: ['Fangs']}],
   [24289, {mainName: 'Armored Scale', altNames: ['Scales']}],
   [24300, {mainName: 'Elaborate Totem', altNames: ['Tótem', 'Totem']}],
-  [24283, {mainName: 'Powerful Venom Sac', altNames: ['Venom']}],
+  [24283, {mainName: 'Powerful Venom Sac', altNames: ['Venoms', 'sac']}],
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', 'amalgamada']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
   [89271, {mainName: 'Pile of Lucent Crystal', altNames: ['Lucent']}],
-  [24294, {mainName: 'Vial of Potent Blood', altNames: ['Vial de sangre potente', 'Vial']}],
+  [24294, {mainName: 'Vial of Potent Blood', altNames: ['Vial de sangre potente', 'potente']}],
   [24341, {mainName: 'Large Bone', altNames: ['Hueso', 'Hueso grande']}],
   [24350, {mainName: 'Large Claw', altNames: ['Garra grande']}],
   [24356, {mainName: 'Large Fang', altNames: ['Colmillo grande']}],
@@ -207,7 +207,6 @@ const itemsMap = new Map([
   
 
 ]);
-
 
 const excludedLegendaryItems = new Set([96978, 96722]);
 

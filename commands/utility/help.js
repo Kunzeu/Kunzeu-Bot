@@ -7,7 +7,7 @@ module.exports = {
   async execute(interaction) {
     // Aquí colocas las instrucciones o información que deseas mostrar al usar /help
     const helpMessage = + 
-    '## Hello! Here are the usage instructions:\n' +
+    'Hello! Here are the usage instructions:\n\n' +
     '• `/item`: This command will help you see the value of items.\n' +
     '• `/id`: Search for items by their ID.\n' +
     '• `/t3`: This command will help you see the total value of T3 level items.\n' +
@@ -20,12 +20,12 @@ module.exports = {
     '• `/magic`: This command lets you see the price of the Gift of Magic.\n' +
     '• `/apikey`: Allows you to add or update your API key in the bot to use certain commands.\n' +
     '• `/apidel`: Allows you to delete your API key from the bot to stop using certain commands.'
+    '• `/hora`: Time\n' +
 
 
       
 
-    
-    
+     
   
 
     await interaction.reply({ content: helpMessage });

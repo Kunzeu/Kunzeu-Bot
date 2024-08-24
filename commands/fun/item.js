@@ -202,7 +202,7 @@ const itemsMap = new Map([
   [19748, {mainName: 'Resto de seda', altNames: ['Silk Scrap', 'seda']}],
   [19729, {mainName: 'Trozo de cuero grueso', altNames: ['cuero', 'Leather', 'Thick Leather Section']}],
   [19722, {mainName: 'Elder Wood Log', altNames: ['Leño de madera ancestral', 'Wood', 'Log']}],
-  [19700, {mainName: 'Mithril Ore', altNames: ['Mineral de mithril', 'Ore', 'Mithril']}]
+  [19700, {mainName: 'Mithril Ore', altNames: ['Mineral de mithril', 'Ore', 'Mithril']}],
   [12134, {mainName: 'Carrot', altNames: ['Zanahoria']}],
 
 

@@ -189,6 +189,7 @@ const itemsMap = new Map([
   [24300, {mainName: 'Elaborate Totem', altNames: ['Tótem', 'Totem']}],
   [24283, {mainName: 'Powerful Venom Sac', altNames: ['Venoms', 'sac']}],
   [24277, {mainName: 'Pile of Crystalline Dust', altNames: ['Dust']}],
+<<<<<<< HEAD
   [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', 'amalgamada']}],
   [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
   [89271, {mainName: 'Pile of Lucent Crystal', altNames: ['Lucent']}],
@@ -205,6 +206,10 @@ const itemsMap = new Map([
   [19700, {mainName: 'Mithril Ore', altNames: ['Mineral de mithril', 'Ore', 'Mithril']}]
 
   
+=======
+  [68063, {mainName: 'Amalgamated Gemstone', altNames: ['Gem', ' amalgamada', 'ama']}],
+  [19976, {mainName: 'Mystic Coin', altNames: ['MC', 'mc', 'Monedas Misticas']}],
+>>>>>>> cb8cff0 (Mc add to items)
 
 ]);
 

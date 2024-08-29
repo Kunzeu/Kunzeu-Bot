@@ -3,15 +3,13 @@ const axios = require('axios');
 const moment = require('moment-timezone');
 
 const timezones = {
-  "🇪🇸 (Madrid)": "Europe/Madrid",
-  "🇪🇸 (Canarias)": "Atlantic/Canary",
+  "🇪🇸": "Europe/Madrid",
   "🇦🇷": "America/Argentina/Buenos_Aires",
-  "🇨🇱": "America/Santiago",
-  "🇩🇴": "America/Santo_Domingo",
-  "🇨🇴": "America/Bogota",
-  "🇵🇪": "America/Lima",
-  "🇲🇽": "America/Mexico_City",
-  "🇸🇻": "America/El_Salvador"
+  "🇨🇱 🇩🇴": "America/Santiago",
+  // "🇩🇴": "America/Santo_Domingo",
+  "🇨🇴 🇵🇪": "America/Bogota",
+  "🇲🇽 🇸🇻": "America/Mexico_City",
+  //"🇸🇻": "America/El_Salvador"
 };
 
 const line3Emoji = '<:line3:1254465366827208826>'; // Emoji personalizado

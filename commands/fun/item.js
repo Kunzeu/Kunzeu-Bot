@@ -261,7 +261,7 @@ module.exports = {
         const rarezaObjeto = objetoDetails.rarity;
         const imagenObjeto = objetoDetails.icon;
 
-        // Calcula el precio al 95%
+        // Calcula el precio con descuento
         const descuento = objetoId === 85016 ? 0.95 : (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9);
         const precioDescuento = Math.floor(precioVenta * descuento);
         const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuento); // Precio del ítem en cantidad 1
@@ -275,12 +275,49 @@ module.exports = {
           return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
         };
 
+        // Calcula la cantidad de ectos y Monedas Místicas requeridos si el objeto es de rareza "Legendary"
+        let ectosRequeridos = null;
+        let numStacksEctos = null;
+        let ectosAdicionales = null;
+        let monedasMisticasRequeridas = null;
+        let numStacksMonedas = null;
+        let monedasAdicionales = null;
+
+        if (rarezaObjeto === 'Legendary') {
+          const precioEcto = await getPrecioEcto();
+          const precioMonedaMistica = await getPrecioMonedaMistica();
+          if (precioEcto !== null) {
+            ectosRequeridos = Math.ceil(precioDescuento / (precioEcto * 0.9)); // Ectos al 90% del precioDescuento
+            numStacksEctos = Math.floor(ectosRequeridos / 250); // Número de stacks de ectos
+            ectosAdicionales = ectosRequeridos % 250; // Ectos adicionales
+          }
+          if (precioMonedaMistica !== null) {
+            monedasMisticasRequeridas = Math.ceil(precioDescuento / (precioMonedaMistica * 0.9)); // Monedas Místicas al 90% del precioDescuento
+            numStacksMonedas = Math.floor(monedasMisticasRequeridas / 250); // Número de stacks de monedas místicas
+            monedasAdicionales = monedasMisticasRequeridas % 250; // Monedas adicionales
+          }
+        }
+
         // Crea el mensaje de tipo Embed con los precios y el número de ectos requeridos
         let description = `Sell price (Sell): ${calcularMonedas(precioVenta)}\n` +
           `Buy price (Buy): ${calcularMonedas(precioCompra)}`;
 
         description += `\n\n**Sell price of ${nombreObjeto} at ${descuento * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
         description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
+
+        if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId)) {
+          const precioEcto = await getPrecioEcto();
+          const precioMonedaMistica = await getPrecioMonedaMistica();
+          description += `\n\n**Price of Ectos at 90%**: ${calcularMonedas(Math.floor(precioEcto * 0.9))}`;
+          description += `\n\n**Price of Mystic Coins at 90%**: ${calcularMonedas(Math.floor(precioMonedaMistica * 0.9))}`;
+
+          if (ectosRequeridos !== null) {
+            description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
+          }
+          if (monedasMisticasRequeridas !== null) {
+            description += `\n\n**MC to give/receive**: ${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional (Total: ${monedasMisticasRequeridas} <:mc:1276710341954502678>)`;
+          }
+        }
 
         const ltcLink = `https://www.gw2bltc.com/en/item/${objetoId}`;
         const iconURL = await getIconURL(objetoId);
@@ -309,7 +346,7 @@ module.exports = {
   },
 };
 
-// Resto de funciones
+// Función para obtener el URL del ícono
 async function getIconURL(objetoId) {
   try {
     const response = await axios.get(`https://api.guildwars2.com/v2/items/${objetoId}`);
@@ -321,6 +358,7 @@ async function getIconURL(objetoId) {
   }
 }
 
+// Función para obtener el precio de los ectos
 async function getPrecioEcto() {
   try {
     const response = await axios.get('https://api.guildwars2.com/v2/commerce/prices/19721');
@@ -332,6 +370,7 @@ async function getPrecioEcto() {
   }
 }
 
+// Función para obtener el precio de las Monedas Místicas
 async function getPrecioMonedaMistica() {
   try {
     const response = await axios.get('https://api.guildwars2.com/v2/commerce/prices/19976');
@@ -343,6 +382,7 @@ async function getPrecioMonedaMistica() {
   }
 }
 
+// Función para encontrar la ID del objeto por nombre
 function findObjectIdByName(name) {
   for (const [id, item] of itemsMap) {
     const mainName = item.mainName.toLowerCase();

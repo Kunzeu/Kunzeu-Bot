@@ -209,7 +209,7 @@ const itemsMap = new Map([
 
 ]);
 
-const excludedLegendaryItems = new Set([96978, 96722]);
+const excludedLegendaryItems = new Set([96978, 96722, 103351]);
 
 module.exports = {
   data: new SlashCommandBuilder()

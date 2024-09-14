@@ -210,6 +210,7 @@ const itemsMap = new Map([
 ]);
 
 const excludedLegendaryItems = new Set([96978, 96722, 103351]);
+const ninetyFivePercentItems = new Set([85016, 84731, 83008]); // Agrega aquí los IDs de los ítems con descuento del 95%
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -262,7 +263,7 @@ module.exports = {
         const imagenObjeto = objetoDetails.icon;
 
         // Calcula el precio con descuento
-        const descuento = objetoId === 85016 ? 0.95 : (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9);
+        const descuento = ninetyFivePercentItems.has(objetoId) ? 0.95 : (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9);
         const precioDescuento = Math.floor(precioVenta * descuento);
         const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuento); // Precio del ítem en cantidad 1
 

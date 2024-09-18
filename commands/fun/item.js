@@ -206,7 +206,7 @@ const itemsMap = new Map([
   [12134, {mainName: 'Carrot', altNames: ['Zanahoria']}],
   [103351, {mainName: 'Mursaat Runestone', altNames: ['Piedra rúnica de mursaat', 'mursaat']}],
   [75919, {mainName: 'Fractal Encryption', altNames: ['Fractal']}],
-
+  [88045, {mainName: 'Glyph of Volatility', altNames: ['glifo volatilidad', 'volatilidad', 'Volaty']}],
 
 ]);
 

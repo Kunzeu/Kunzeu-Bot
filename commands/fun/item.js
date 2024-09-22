@@ -48,7 +48,7 @@ const itemsMap = new Map([
   [85016, {mainName: 'Blue', altNames: ['Piece of Common Unidentified Gear','Pieza de equipo común sin identificar'] }],
   [84731, {mainName: 'Green', altNames: ['Piece of Unidentified Gear', 'Pieza de equipo sin identificar'] }],
   [83008, {mainName: 'Yellow', altNames: ['Piece of Rare Unidentified Gear', 'Pieza de equipo excepcional sin identificar']}],
-  [19721, {mainName: 'Glob of Ectoplasm', altNames: ['Ectos', 'Ecto'] }],
+  [19721, {mainName: 'Glob of Ectoplasm', altNames: ['Ectos', 'Ecto', 'Ectoplasm'] }],
   [86497, {mainName: 'Extractor', altNames: ['extractor']}],
   [29166, {mainName: 'Tooth of Frostfang', altNames: ['Diente']}],
   [29167, {mainName: 'Spark', altNames: ['Chispa']}],

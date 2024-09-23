@@ -12,7 +12,7 @@ Kunzeu Bot is a Discord bot dedicated to Guild Wars 2 players. It utilizes the G
 
 ## Screenshots
 
-<img src="[https://gyazo.com/5b05f1d5622a923fffd87755f02b391c](https://i.gyazo.com/fe4dc34aefacbe9960f6b9e99eb77b4e.png)" alt="Screenshot 1" style="margin-bottom: 20px;">
+<img src="https://i.gyazo.com/fe4dc34aefacbe9960f6b9e99eb77b4e.png" alt="Screenshot 1" style="margin-bottom: 20px;">
 
 <img src="https://gyazo.com/fe4dc34aefacbe9960f6b9e99eb77b4e" alt="Screenshot 2" style="margin-bottom: 20px;">
 

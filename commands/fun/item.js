@@ -42,7 +42,7 @@ const itemsMap = new Map([
   [97590, {mainName: "Aurene's Flight", altNames: ['LB', 'Vuelo de Aurene','Flight', 'longbow'] }],
   [95684, {mainName: `Aurene's Weight`, altNames: ['martillo', 'Peso de Aurene','Weight'] }],
   [97783, {mainName: `Aurene's Voice`, altNames: ['Voice', 'cuerno', 'Voz de Aurene'] }],
-  [96978, {mainName: 'Antique Summoning Stone', altNames: ['ASS', 'ass'] }],
+  [96978, {mainName: 'Antique Summoning Stone', altNames: ['ASS', 'ass', `vetusta`] }],
   [96722, {mainName: 'Jade Runestone', altNames: ['runestone', 'jade'] }],
   [96347, {mainName: 'Chunk of Ancient Ambergris', altNames: ['Amber', 'amber'] }],
   [85016, {mainName: 'Blue', altNames: ['Piece of Common Unidentified Gear','Pieza de equipo común sin identificar'] }],
@@ -211,7 +211,7 @@ const itemsMap = new Map([
 ]);
 
 const excludedLegendaryItems = new Set([96978, 96722, 103351]);
-const ninetyFivePercentItems = new Set([85016, 84731, 83008]); // Agrega aquí los IDs de los ítems con descuento del 95%
+const ninetyFivePercentItems = new Set([85016, 84731, 83008]); // IDs de los ítems con descuento del 95%
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -258,15 +258,19 @@ module.exports = {
         const responseDetails = await axios.get(`https://api.guildwars2.com/v2/items/${objetoId}?lang=en`);
         const objetoDetails = responseDetails.data;
 
-        // Obtiene el nombre, la rareza y la imagen del objeto
         const nombreObjeto = objetoDetails.name;
         const rarezaObjeto = objetoDetails.rarity;
         const imagenObjeto = objetoDetails.icon;
 
-        // Calcula el precio con descuento
-        const descuento = ninetyFivePercentItems.has(objetoId) ? 0.95 : (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9);
-        const precioDescuento = Math.floor(precioVenta * descuento);
-        const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuento); // Precio del ítem en cantidad 1
+        // Calcula el precio con descuento estándar
+        const descuentoGeneral = ninetyFivePercentItems.has(objetoId) ? 0.95 : (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9);
+        const precioDescuento = Math.floor(precioVenta * descuentoGeneral);
+        const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuentoGeneral); // Precio del ítem en cantidad 1
+
+        // Calcula el precio con descuento del 85%
+        const descuento85 = 0.85;
+        const precioDescuento85 = Math.floor(precioVenta * descuento85);
+        const precioDescuento85Unidad = Math.floor(objeto.sells.unit_price * descuento85);
 
         // Calcula la cantidad de oro, plata y cobre para los precios
         const calcularMonedas = (precio) => {
@@ -277,7 +281,10 @@ module.exports = {
           return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
         };
 
-        // Calcula la cantidad de ectos y Monedas Místicas requeridos si el objeto es de rareza "Legendary"
+        // Calcula siempre la cantidad de ectos y monedas místicas
+        const precioEcto = await getPrecioEcto();
+        const precioMonedaMistica = await getPrecioMonedaMistica();
+
         let ectosRequeridos = null;
         let numStacksEctos = null;
         let ectosAdicionales = null;
@@ -285,40 +292,33 @@ module.exports = {
         let numStacksMonedas = null;
         let monedasAdicionales = null;
 
-        if (rarezaObjeto === 'Legendary') {
-          const precioEcto = await getPrecioEcto();
-          const precioMonedaMistica = await getPrecioMonedaMistica();
-          if (precioEcto !== null) {
-            ectosRequeridos = Math.ceil(precioDescuento / (precioEcto * 0.9)); // Ectos al 90% del precioDescuento
-            numStacksEctos = Math.floor(ectosRequeridos / 250); // Número de stacks de ectos
-            ectosAdicionales = ectosRequeridos % 250; // Ectos adicionales
-          }
-          if (precioMonedaMistica !== null) {
-            monedasMisticasRequeridas = Math.ceil(precioDescuento / (precioMonedaMistica * 0.9)); // Monedas Místicas al 90% del precioDescuento
-            numStacksMonedas = Math.floor(monedasMisticasRequeridas / 250); // Número de stacks de monedas místicas
-            monedasAdicionales = monedasMisticasRequeridas % 250; // Monedas adicionales
-          }
+        if (precioEcto !== null) {
+          ectosRequeridos = Math.ceil(precioDescuento / (precioEcto * 0.9)); // Ectos al 90% del precioDescuento
+          numStacksEctos = Math.floor(ectosRequeridos / 250); // Número de stacks de ectos
+          ectosAdicionales = ectosRequeridos % 250; // Ectos adicionales
+        }
+        if (precioMonedaMistica !== null) {
+          monedasMisticasRequeridas = Math.ceil(precioDescuento / (precioMonedaMistica * 0.9)); // Monedas Místicas al 90% del precioDescuento
+          numStacksMonedas = Math.floor(monedasMisticasRequeridas / 250); // Número de stacks de monedas místicas
+          monedasAdicionales = monedasMisticasRequeridas % 250; // Monedas adicionales
         }
 
-        // Crea el mensaje de tipo Embed con los precios y el número de ectos requeridos
+        // Crea el mensaje de tipo Embed con los precios y el número de ectos y monedas místicas requeridos
         let description = `Sell price (Sell): ${calcularMonedas(precioVenta)}\n` +
           `Buy price (Buy): ${calcularMonedas(precioCompra)}`;
 
-        description += `\n\n**Sell price of ${nombreObjeto} at ${descuento * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
-        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
+        description += `\n\n**Sell price of ${nombreObjeto} at ${descuentoGeneral * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
+        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuentoGeneral * 100}%: ${calcularMonedas(precioDescuento)}_**`;
 
-        if (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId)) {
-          const precioEcto = await getPrecioEcto();
-          const precioMonedaMistica = await getPrecioMonedaMistica();
-          description += `\n\n**Price of Ectos at 90%**: ${calcularMonedas(Math.floor(precioEcto * 0.9))}`;
-          description += `\n\n**Price of Mystic Coins at 90%**: ${calcularMonedas(Math.floor(precioMonedaMistica * 0.9))}`;
+        //  Añadir el precio con descuento del 85%
+        description += `\n\n**Sell price of ${nombreObjeto} at 85%**: ${calcularMonedas(precioDescuento85Unidad)}`;
+        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at 85%: ${calcularMonedas(precioDescuento85)}_**`;
 
-          if (ectosRequeridos !== null) {
-            description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
-          }
-          if (monedasMisticasRequeridas !== null) {
-            description += `\n\n**MC to give/receive**: ${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional (Total: ${monedasMisticasRequeridas} <:mc:1276710341954502678>)`;
-          }
+        if (ectosRequeridos !== null) {
+          description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
+        }
+        if (monedasMisticasRequeridas !== null) {
+          description += `\n\n**MC to give/receive**: ${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional (Total: ${monedasMisticasRequeridas} <:mc:1276710341954502678>)`;
         }
 
         const ltcLink = `https://www.gw2bltc.com/en/item/${objetoId}`;
@@ -394,3 +394,4 @@ function findObjectIdByName(name) {
   }
   return null;
 }
+

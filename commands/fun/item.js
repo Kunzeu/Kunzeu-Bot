@@ -207,6 +207,10 @@ const itemsMap = new Map([
   [103351, {mainName: 'Mursaat Runestone', altNames: ['Piedra rúnica de mursaat', 'mursaat']}],
   [75919, {mainName: 'Fractal Encryption', altNames: ['Fractal']}],
   [88045, {mainName: 'Glyph of Volatility', altNames: ['glifo volatilidad', 'volatilidad', 'Volaty']}],
+  [36041, {mainName: 'Piece of Candy Corn', altNames: ['Caramelo', 'candy', 'Trozo de caramelo', 'trozo']}],
+  [47909, {mainName: 'Candy Corn Cob', altNames: ['Corn', 'barra', 'Barra de caramelo']}],
+
+
 
 ]);
 

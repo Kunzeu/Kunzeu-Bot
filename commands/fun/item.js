@@ -262,15 +262,10 @@ module.exports = {
         const rarezaObjeto = objetoDetails.rarity;
         const imagenObjeto = objetoDetails.icon;
 
-        // Calcula el precio con descuento estándar
-        const descuentoGeneral = ninetyFivePercentItems.has(objetoId) ? 0.95 : (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9);
-        const precioDescuento = Math.floor(precioVenta * descuentoGeneral);
-        const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuentoGeneral); // Precio del ítem en cantidad 1
-
-        // Calcula el precio con descuento del 85%
-        const descuento85 = 0.85;
-        const precioDescuento85 = Math.floor(precioVenta * descuento85);
-        const precioDescuento85Unidad = Math.floor(objeto.sells.unit_price * descuento85);
+        // Calcula el precio con descuento
+        const descuento = ninetyFivePercentItems.has(objetoId) ? 0.95 : (rarezaObjeto === 'Legendary' && !excludedLegendaryItems.has(objetoId) ? 0.85 : 0.9);
+        const precioDescuento = Math.floor(precioVenta * descuento);
+        const precioDescuentoUnidad = Math.floor(objeto.sells.unit_price * descuento); // Precio del ítem en cantidad 1
 
         // Calcula la cantidad de oro, plata y cobre para los precios
         const calcularMonedas = (precio) => {
@@ -307,12 +302,8 @@ module.exports = {
         let description = `Sell price (Sell): ${calcularMonedas(precioVenta)}\n` +
           `Buy price (Buy): ${calcularMonedas(precioCompra)}`;
 
-        description += `\n\n**Sell price of ${nombreObjeto} at ${descuentoGeneral * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
-        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuentoGeneral * 100}%: ${calcularMonedas(precioDescuento)}_**`;
-
-        //  Añadir el precio con descuento del 85%
-        description += `\n\n**Sell price of ${nombreObjeto} at 85%**: ${calcularMonedas(precioDescuento85Unidad)}`;
-        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at 85%: ${calcularMonedas(precioDescuento85)}_**`;
+        description += `\n\n**Sell price of ${nombreObjeto} at ${descuento * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
+        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
 
         if (ectosRequeridos !== null) {
           description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
@@ -394,4 +385,3 @@ function findObjectIdByName(name) {
   }
   return null;
 }
-

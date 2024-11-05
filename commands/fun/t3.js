@@ -36,7 +36,7 @@ module.exports = {
 
       const embed = {
         title: '<:TP:1303367310538440848> T3 Materials Calculator',
-        color: 0x4169E1, // Color azul real para T3
+        color: 0x4169E1, // Azul real para T3
         thumbnail: {
           url: T3_GIF_URL
         },
@@ -52,9 +52,9 @@ module.exports = {
             inline: false
           },
           {
-            name: '<:T3_Vial_of_Blood:1303388161434456116> Materials Included',
+            name: '<:T3_Vial_of_Blood:1303388161434456116> Materials Breakdown',
             value: itemDetails.map(item => 
-              `• **${item.name}**: ${calcularMonedas(item.unitPrice * totalQuantity)}`
+              `• **${item.name}**: ${calculateCoins(item.unitPrice * stackSize)}`
             ).join('\n'),
             inline: false
           },
@@ -64,6 +64,15 @@ module.exports = {
             inline: false
           }
         ],
+        description: `Calculate the total price for T3 materials including:\n` +
+                     `• Vial of Potent Blood\n` +
+                     `• Potent Venom Sac\n` +
+                     `• Large Scale\n` +
+                     `• Sharp Claw\n` +
+                     `• Large Fang\n` +
+                     `• Intricate Totem\n` +
+                     `• Heavy Bone\n` +
+                     `• Luminous Dust`,
         footer: {
           text: 'Trading Post prices updated • Prices may vary',
           icon_url: T3_GIF_URL

@@ -31,20 +31,48 @@ module.exports = {
       let totalPrecioVentaUser = 0;
 
       const itemDetails = await Promise.all(itemIds.map(async (itemId) => {
-        const [precioData, itemData] = await Promise.all([
-          getGw2ApiData(`commerce/prices/${itemId}`, 'en'),
-          getGw2ApiData(`items/${itemId}`, 'en')
-        ]);
+        try {
+          const [precioData, itemData] = await Promise.all([
+            getGw2ApiData(`commerce/prices/${itemId}`, 'en'),
+            getGw2ApiData(`items/${itemId}`, 'en')
+          ]);
 
-        const unitPrice = precioData?.sells?.unit_price || 0;
-        totalPrecioVenta += unitPrice * baseStackSize;
-        totalPrecioVentaUser += unitPrice * totalQuantity;
+          if (!precioData || !precioData.sells || !itemData) {
+            console.error(`Failed to get data for item ${itemId}:`, { precioData, itemData });
+            return {
+              name: `Item ${itemId}`,
+              unitPrice: 0,
+              error: true
+            };
+          }
 
-        return {
-          name: itemData.name,
-          unitPrice: unitPrice
-        };
+          const unitPrice = precioData.sells.unit_price || 0;
+          totalPrecioVenta += unitPrice * baseStackSize;
+          totalPrecioVentaUser += unitPrice * totalQuantity;
+
+          return {
+            name: itemData.name,
+            unitPrice: unitPrice
+          };
+        } catch (itemError) {
+          console.error(`Error processing item ${itemId}:`, itemError);
+          return {
+            name: `Item ${itemId}`,
+            unitPrice: 0,
+            error: true
+          };
+        }
       }));
+
+      // Verificar si hay algún error en los items
+      const failedItems = itemDetails.filter(item => item.error);
+      if (failedItems.length > 0) {
+        await interaction.reply({
+          content: 'Error: Could not fetch prices for some T6 materials. Please try again later.',
+          ephemeral: true
+        });
+        return;
+      }
 
       const precioTotal90 = totalPrecioVenta * 0.9;
       const precioTotalUser90 = totalPrecioVentaUser * 0.9;
@@ -147,8 +175,31 @@ module.exports = {
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
-      console.error('Error al realizar la solicitud:', error.message);
-      await interaction.reply('Oops! There was an error in calculating the total price of T6 materials.');
+      console.error('Error calculating T6 prices:', error);
+      
+      const errorEmbed = {
+        title: '❌ Error Calculating T6 Prices',
+        description: 'There was an error while calculating the prices. This might be due to:',
+        color: 0xFF0000,
+        fields: [
+          {
+            name: 'Possible Causes',
+            value: '• Trading Post API might be down\n• Network connectivity issues\n• Rate limiting from the API',
+            inline: false
+          },
+          {
+            name: 'What to do',
+            value: '• Please try again in a few minutes\n• If the error persists, check the GW2 API status',
+            inline: false
+          }
+        ],
+        footer: {
+          text: 'Error timestamp: ' + new Date().toLocaleString(),
+          icon_url: 'https://wiki.guildwars2.com/images/thumb/2/24/Trading_Post_%28map_icon%29.png/20px-Trading_Post_%28map_icon%29.png'
+        }
+      };
+
+      await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
     }
   },
 };

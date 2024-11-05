@@ -11,14 +11,35 @@ class DatabaseManager {
     async connect() {
         try {
             await this.client.connect();
+            console.log('✅ Connected to MongoDB');
+            
             this.db = this.client.db(this.dbName);
+            console.log(`📁 Using database: ${this.dbName}`);
+            
+            // Crear colección si no existe
+            const collections = await this.db.listCollections().toArray();
+            if (!collections.some(c => c.name === 'api_keys')) {
+                await this.db.createCollection('api_keys');
+                console.log('📑 Created api_keys collection');
+            }
+            
             this.apiKeys = this.db.collection('api_keys');
             
+            // Crear índice único para user_id
             await this.apiKeys.createIndex({ user_id: 1 }, { unique: true });
-            
-            console.log(`✅ Connected to MongoDB Database: ${this.dbName}`);
+            console.log('🔑 Created index on user_id');
+
+            // Verificar la conexión
+            const stats = await this.db.stats();
+            console.log(`📊 Database stats:
+                Collections: ${stats.collections}
+                Documents: ${stats.objects}
+            `);
+
+            return true;
         } catch (error) {
             console.error('❌ MongoDB connection error:', error);
+            return false;
         }
     }
 

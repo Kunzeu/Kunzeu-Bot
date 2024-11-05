@@ -30,9 +30,36 @@ module.exports = {
             switch (subcommand) {
                 case 'add': {
                     const apiKey = interaction.options.getString('key');
-                    await dbManager.setApiKey(userId, apiKey);
+                    const success = await dbManager.setApiKey(userId, apiKey);
+                    
+                    console.log(`API Key operation:
+                    User: ${interaction.user.tag} (${userId})
+                    Action: Add
+                    Success: ${success}
+                    Timestamp: ${new Date().toISOString()}
+                    `);
+
                     await interaction.reply({
-                        content: '✅ API key successfully stored!',
+                        embeds: [{
+                            title: success ? '✅ Success' : '❌ Error',
+                            description: success 
+                                ? 'API key successfully stored!'
+                                : 'Failed to store API key.',
+                            color: success ? 0x00ff00 : 0xff0000,
+                            fields: [
+                                {
+                                    name: 'User',
+                                    value: interaction.user.tag,
+                                    inline: true
+                                },
+                                {
+                                    name: 'Status',
+                                    value: success ? 'Stored' : 'Failed',
+                                    inline: true
+                                }
+                            ],
+                            timestamp: new Date()
+                        }],
                         ephemeral: true
                     });
                     break;

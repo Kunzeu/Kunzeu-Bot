@@ -322,12 +322,12 @@ module.exports = {
           thumbnail: { url: imagenObjeto },
           fields: [
             {
-              name: '📈 TP prices',
+              name: '<:TP:1303367310538440848> TP prices',
               value: `Sell: ${calcularMonedas(precioVenta)}\nBuy: ${calcularMonedas(precioCompra)}`,
               inline: false
             },
             {
-              name: `💎 Price with ${descuento * 100}% discount`,
+              name: `💎 Price at ${descuento * 100}%`,
               value: `Per unit: ${calcularMonedas(precioDescuentoUnidad)}\n**Total (${quantity}x): ${calcularMonedas(precioDescuento)}**`,
               inline: false
             },
@@ -339,7 +339,7 @@ module.exports = {
           ],
           footer: {
             text: `ID: ${objetoId} • Rarity: ${rarezaObjeto}`,
-            icon_url: 'https://wiki.guildwars2.com/images/thumb/2/24/Trading_Post_%28map_icon%29.png/20px-Trading_Post_%28map_icon%29.png'
+            icon_url: imagenObjeto
           }
         };
 

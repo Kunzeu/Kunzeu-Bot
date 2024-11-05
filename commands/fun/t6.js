@@ -57,14 +57,40 @@ module.exports = {
       };
 
       const embed = {
-        title: 'Total price of materials T6',
-        description: `The total price at 100% of the T6 materials is: ${calcularMonedas(totalPrecioVenta)}.\n` +
-                     `The total price at 90% of the T6 materials is: ${calcularMonedas(precioTotal90.toFixed(0))}.\n\n` +
-                     `**The total price for ${totalQuantity} materials at 90% is:** ${calcularMonedas(precioTotalUser90.toFixed(0))}.`,
-        color: 0xffc0cb, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
+        title: '📊 T6 Materials Calculator',
+        color: 0xffa500, // Orange for T6 materials
         thumbnail: {
-          url: 'https://cdn.discordapp.com/attachments/903356166560686190/1251039149998477312/ezgif-4-68341b97cb.gif?ex=666d2080&is=666bcf00&hm=bfcbb52c92c05c09f4d9c7421aa533667d603ed409aad64e1f0efa42de49f096&'
-        }
+          url: 'https://cdn.discordapp.com/attachments/903356166560686190/1251039149998477312/ezgif-4-68341b97cb.gif'
+        },
+        fields: [
+          {
+            name: '🎯 Requested Amount',
+            value: `${totalQuantity} units`,
+            inline: false
+          },
+          {
+            name: '📦 Price per Stack (250)',
+            value: `💰 100%: ${calcularMonedas(totalPrecioVenta)}\n📉 90%: ${calcularMonedas(precioTotal90.toFixed(0))}`,
+            inline: false
+          },
+          {
+            name: '💎 Materials Breakdown',
+            value: itemDetails.map(item => 
+              `• **${item.name}**: ${calcularMonedas(item.unitPrice * totalQuantity)}`
+            ).join('\n'),
+            inline: false
+          },
+          {
+            name: '💰 Total Price',
+            value: `**100%:** ${calcularMonedas(totalPrecioVentaUser)}\n**90%:** ${calcularMonedas(precioTotalUser90.toFixed(0))}`,
+            inline: false
+          }
+        ],
+        footer: {
+          text: 'Trading Post prices updated • Prices may vary',
+          icon_url: 'https://wiki.guildwars2.com/images/thumb/2/24/Trading_Post_%28map_icon%29.png/20px-Trading_Post_%28map_icon%29.png'
+        },
+        timestamp: new Date()
       };
 
       await interaction.reply({ embeds: [embed] });

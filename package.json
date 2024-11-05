@@ -14,6 +14,7 @@
     "@discordjs/rest": "^2.0.0",
     "@types/node": "^18.0.6",
     "axios": "^1.7.2",
+    "better-sqlite3": "^11.5.0",
     "cheerio": "^1.0.0-rc.12",
     "discord-api-types": "^0.37.51",
     "discord.js": "^14.15.2",
@@ -21,10 +22,11 @@
     "express": "^4.18.2",
     "hammertime": "^1.0.0",
     "moment-timezone": "^0.5.45",
+    "mongodb": "^6.10.0",
     "mongoose": "^7.4.1",
     "node-fetch": "^3.2.6",
     "rss-parser": "^3.13.0",
-    "sqlite3": "^5.1.6",
+    "sqlite3": "^5.1.7",
     "webhook.js": "^1.0.5"
   }
 }

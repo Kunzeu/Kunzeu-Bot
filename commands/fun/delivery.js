@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const axios = require('axios');
-const { getUserApiKey } = require('../utility/db');
+const apiKeyDB = require('../../database/database.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ module.exports = {
     const userId = interaction.user.id;
 
     try {
-      const apiKey = await getUserApiKey(userId);
+      const apiKey = await apiKeyDB.getApiKey(userId);
 
       if (!apiKey) {
         return await interaction.editReply({
@@ -25,9 +25,9 @@ module.exports = {
       const embed = await formatDeliveryDetailsEmbed(deliveryDetails, interaction.user);
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
-      console.error('Error getting delivery details:', error);
+      console.error('Error:', error);
       await interaction.editReply({
-        content: '❌ Error accessing the Trading Post. Please try again later.',
+        content: '❌ An error occurred while processing your request.',
         ephemeral: true
       });
     }

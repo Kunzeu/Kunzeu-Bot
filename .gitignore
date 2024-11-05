@@ -1,12 +1,37 @@
+# Node
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+src/database/database.js
+*.db
+*.sqlite
+
+# Logs
+logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
 postids.db
-database.db
 replit.nix
 .cache
 .config
 .replit
 .upm
 .notebook
-.node_modules
-node_modules
 keep_alive.js
-.env

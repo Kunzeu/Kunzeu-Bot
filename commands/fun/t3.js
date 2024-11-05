@@ -56,7 +56,7 @@ module.exports = {
           },
           {
             name: '<:Trading_post_unlock:1303391934072623236> Total Price',
-            value: `**100%:** ${calculateCoins(totalSellPrice)}\n**90%:** ${calculateCoins(totalPrice90)}`,
+            value: `**90%:** ${calculateCoins(totalPrice90)}`,
             inline: false
           }
         ],

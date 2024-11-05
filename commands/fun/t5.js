@@ -1,55 +1,86 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getGw2ApiData } = require('../utility/api.js'); // Ajusta la ruta según tu estructura de archivos
+const axios = require('axios');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('t5') 
-    .setDescription('Calculate the total price of T5 materials.'), 
+    .setName('t5')
+    .setDescription('Calculate the total price of T5 materials.'),
 
   async execute(interaction) {
-    const itemIds = [24294, 24341, 24350, 24356, 24288, 24299, 24282]; 
+    const itemIds = [24294, 24282, 24299, 24275, 24355, 24287, 24349, 24276];
     const stackSize = 250;
-
+    
     try {
-      let totalPrecioVenta = 0;
-
-      // Llama a la función para obtener el precio de venta de cada objeto
-      await Promise.all(itemIds.map(async (itemId) => {
-        if (itemId === 24276) {
-          return; // Ignora el item 24276
-        }
-
-        const objeto = await getGw2ApiData(`commerce/prices/${itemId}`, 'es');
-        if (objeto && objeto.sells) {
-          totalPrecioVenta += objeto.sells.unit_price * stackSize;
-        }
+      // First, get all item details
+      const itemDetails = await Promise.all(itemIds.map(async (itemId) => {
+        const [itemInfo, priceInfo] = await Promise.all([
+          axios.get(`https://api.guildwars2.com/v2/items/${itemId}`),
+          axios.get(`https://api.guildwars2.com/v2/commerce/prices/${itemId}`)
+        ]);
+        return {
+          name: itemInfo.data.name,
+          id: itemId,
+          unitPrice: priceInfo.data.sells.unit_price
+        };
       }));
 
-      // Calcula el 90% del precio total
-      const precioTotal90 = totalPrecioVenta * 0.9;
+      // Calculate total prices
+      const totalSellPrice = itemDetails.reduce((sum, item) => sum + (item.unitPrice * stackSize), 0);
+      const totalPrice90 = totalSellPrice * 0.9;
 
-      // Calcula el número de monedas (oro, plata y cobre) y agrega los emotes correspondientes
-      const calcularMonedas = (precio) => {
-        const oro = Math.floor(precio / 10000);
-        const plata = Math.floor((precio % 10000) / 100);
-        const cobre = precio % 100;
-        return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
-      };
+      const T5_GIF_URL = 'https://cdn.discordapp.com/attachments/1178687540232978454/1254195282900553839/ezgif.com-animated-gif-maker.gif';
 
       const embed = {
-        title: 'Total price of materials T5',
-        description: `The total price at 100% of the T5 materials (without Pile of Incandescent Dust) is: ${calcularMonedas(totalPrecioVenta)}.\nThe total price at 90% of the T5 materials (without Pile of Incandescent Dust) is: ${calcularMonedas(precioTotal90.toFixed(0))}.`,
-        color: 2593204, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
+        title: '<:TP:1303367310538440848> T5 Materials Calculator',
+        color: 0xffd700, // Dorado para T5
         thumbnail: {
-          url: 'https://cdn.discordapp.com/attachments/1178687540232978454/1254195282900553839/ezgif.com-animated-gif-maker.gif?ex=66789be1&is=66774a61&hm=0a06be2e3cd4323de0aec696e721cbe862c80bec8cb288bf6cacfed07637e047&'
-        }
+          url: T5_GIF_URL
+        },
+        fields: [
+          {
+            name: '<:Mystic_Forge:1303384550138839061> Requested Amount',
+            value: `${stackSize} units`,
+            inline: false
+          },
+          {
+            name: '<:bag:1303385936280813668> Price per Stack (250)',
+            value: `<:TP:1303367310538440848> 100%: ${calculateCoins(totalSellPrice)}\n<:TP:1303367310538440848> 90%: ${calculateCoins(totalPrice90)}`,
+            inline: false
+          },
+          {
+            name: '<:T5_Vial_of_Blood:1303388161434456116> Materials Breakdown',
+            value: itemDetails.map(item => 
+              `• **${item.name}**: ${calculateCoins(item.unitPrice * stackSize)}`
+            ).join('\n'),
+            inline: false
+          },
+          {
+            name: '<:Trading_post_unlock:1303391934072623236> Total Price',
+            value: `**100%:** ${calculateCoins(totalSellPrice)}\n**90%:** ${calculateCoins(totalPrice90)}`,
+            inline: false
+          }
+        ],
+        footer: {
+          text: 'Trading Post prices updated • Prices may vary',
+          icon_url: T5_GIF_URL
+        },
+        timestamp: new Date()
       };
-      
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
-      console.error('Error when making the request:', error.message);
-      await interaction.reply('Oops! There was an error in calculating the total price of T5 materials.');
+      console.error('Error:', error);
+      await interaction.reply({ 
+        content: 'Oops! There was an error calculating the total price of T5 materials.', 
+        ephemeral: true 
+      });
     }
   },
 };
+
+function calculateCoins(price) {
+  const gold = Math.floor(price / 10000);
+  const silver = Math.floor((price % 10000) / 100);
+  const copper = price % 100;
+  return `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`;
+}

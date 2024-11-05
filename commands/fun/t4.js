@@ -7,36 +7,32 @@ module.exports = {
     .setDescription('Calculate the total price of T4 materials.'),
 
   async execute(interaction) {
-    const itemIds = [24293, 24281, 24363, 24275, 24355, 24287, 24349, 24345];      
+    const itemIds = [24293, 24281, 24297, 24273, 24353, 24285, 24347, 24343];
     const stackSize = 250;
+    
     try {
-      let totalSellPrice = 0;
-
-      // Make request to the API to get the sell price of each item
-      await Promise.all(itemIds.map(async (itemId) => {
-        const response = await axios.get(`https://api.guildwars2.com/v2/commerce/prices/${itemId}`);
-        const item = response.data;
-        if (item && item.sells) {
-          totalSellPrice += item.sells.unit_price * stackSize;
-        }
+      // First, get all item details
+      const itemDetails = await Promise.all(itemIds.map(async (itemId) => {
+        const [itemInfo, priceInfo] = await Promise.all([
+          axios.get(`https://api.guildwars2.com/v2/items/${itemId}`),
+          axios.get(`https://api.guildwars2.com/v2/commerce/prices/${itemId}`)
+        ]);
+        return {
+          name: itemInfo.data.name,
+          id: itemId,
+          unitPrice: priceInfo.data.sells.unit_price
+        };
       }));
 
-      // Calculate 90% of the total price
+      // Calculate total prices
+      const totalSellPrice = itemDetails.reduce((sum, item) => sum + (item.unitPrice * stackSize), 0);
       const totalPrice90 = totalSellPrice * 0.9;
-
-      // Calculate the number of coins (gold, silver, and copper) and add corresponding emotes
-      const calculateCoins = (price) => {
-        const gold = Math.floor(price / 10000);
-        const silver = Math.floor((price % 10000) / 100);
-        const copper = price % 100;
-        return `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`;
-      };
 
       const T4_GIF_URL = 'https://cdn.discordapp.com/attachments/1178687540232978454/1254194723107766423/ezgif.com-animated-gif-maker.gif';
 
       const embed = {
         title: '<:TP:1303367310538440848> T4 Materials Calculator',
-        color: 0x00ff00,
+        color: 0x4169E1, // Azul para T4
         thumbnail: {
           url: T4_GIF_URL
         },
@@ -48,19 +44,19 @@ module.exports = {
           },
           {
             name: '<:bag:1303385936280813668> Price per Stack (250)',
-            value: `<:TP:1303367310538440848> 100%: ${calculateCoins(totalSellPrice)}\n<:TP:1303367310538440848> 90%: ${calculateCoins(totalPrice90.toFixed(0))}`,
+            value: `<:TP:1303367310538440848> 100%: ${calculateCoins(totalSellPrice)}\n<:TP:1303367310538440848> 90%: ${calculateCoins(totalPrice90)}`,
             inline: false
           },
           {
-            name: '<:T4_Vial_of_Thick_Blood:1303387945943699558> Materials Breakdown',
+            name: '<:T4_Vial_of_Blood:1303388161434456116> Materials Breakdown',
             value: itemDetails.map(item => 
-              `• **${item.name}**: ${calculateCoins(item.unitPrice * totalQuantity)}`
+              `• **${item.name}**: ${calculateCoins(item.unitPrice * stackSize)}`
             ).join('\n'),
             inline: false
           },
           {
             name: '<:Trading_post_unlock:1303391934072623236> Total Price',
-            value: `**90%:** ${calculateCoins(totalPrice90.toFixed(0))}`,
+            value: `**100%:** ${calculateCoins(totalSellPrice)}\n**90%:** ${calculateCoins(totalPrice90)}`,
             inline: false
           }
         ],
@@ -73,8 +69,18 @@ module.exports = {
 
       await interaction.reply({ embeds: [embed] });
     } catch (error) {
-      console.error('Error making request:', error.message);
-      await interaction.reply('Oops! There was an error calculating the total price of T4 materials.');
+      console.error('Error:', error);
+      await interaction.reply({ 
+        content: 'Oops! There was an error calculating the total price of T4 materials.', 
+        ephemeral: true 
+      });
     }
   },
 };
+
+function calculateCoins(price) {
+  const gold = Math.floor(price / 10000);
+  const silver = Math.floor((price % 10000) / 100);
+  const copper = price % 100;
+  return `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`;
+}

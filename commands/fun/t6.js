@@ -56,39 +56,41 @@ module.exports = {
         return `${oro} <:gold:1134754786705674290> ${plata} <:silver:1134756015691268106> ${cobre} <:Copper:1134756013195661353>`;
       };
 
+      const T6_GIF_URL = 'https://cdn.discordapp.com/attachments/903356166560686190/1251039149998477312/ezgif-4-68341b97cb.gif';
+
       const embed = {
-        title: '📊 T6 Materials Calculator',
-        color: 0xffa500, // Orange for T6 materials
+        title: '<:TP:1303367310538440848> T6 Materials Calculator',
+        color: 0xffa500,
         thumbnail: {
-          url: 'https://cdn.discordapp.com/attachments/903356166560686190/1251039149998477312/ezgif-4-68341b97cb.gif'
+          url: T6_GIF_URL
         },
         fields: [
           {
-            name: '🎯 Requested Amount',
+            name: '<:Mystic_Forge:1303384550138839061> Requested Amount',
             value: `${totalQuantity} units`,
             inline: false
           },
           {
-            name: '📦 Price per Stack (250)',
-            value: `💰 100%: ${calcularMonedas(totalPrecioVenta)}\n📉 90%: ${calcularMonedas(precioTotal90.toFixed(0))}`,
+            name: '<:bag:1303385936280813668> Price per Stack (250)',
+            value: `<:TP:1303367310538440848> 100%: ${calcularMonedas(totalPrecioVenta)}\n<:TP:1303367310538440848> 90%: ${calcularMonedas(precioTotal90.toFixed(0))}`,
             inline: false
           },
           {
-            name: '💎 Materials Breakdown',
+            name: '<:T6_Vial_of_Powerful_Blood:1303387201463128064> Materials Breakdown',
             value: itemDetails.map(item => 
               `• **${item.name}**: ${calcularMonedas(item.unitPrice * totalQuantity)}`
             ).join('\n'),
             inline: false
           },
           {
-            name: '💰 Total Price',
-            value: `**100%:** ${calcularMonedas(totalPrecioVentaUser)}\n**90%:** ${calcularMonedas(precioTotalUser90.toFixed(0))}`,
+            name: '<:Trading_post_unlock:1303391934072623236> Total Price',
+            value: `**90%:** ${calcularMonedas(precioTotalUser90.toFixed(0))}`,
             inline: false
           }
         ],
         footer: {
           text: 'Trading Post prices updated • Prices may vary',
-          icon_url: 'https://wiki.guildwars2.com/images/thumb/2/24/Trading_Post_%28map_icon%29.png/20px-Trading_Post_%28map_icon%29.png'
+          icon_url: T6_GIF_URL
         },
         timestamp: new Date()
       };

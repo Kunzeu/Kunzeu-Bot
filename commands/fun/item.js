@@ -332,7 +332,7 @@ module.exports = {
               inline: false
             },
             {
-              name: '📊 Sell Listings',
+              name: '<:Trading_post_unlock:1303391934072623236> Sell Listings',
               value: formatSellListings(listings),  
               inline: false
             }

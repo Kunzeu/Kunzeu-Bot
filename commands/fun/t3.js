@@ -32,13 +32,43 @@ module.exports = {
         return `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`;
       };
 
+      const T3_GIF_URL = 'https://cdn.discordapp.com/attachments/1178687540232978454/1254195627114627162/ezgif.com-animated-gif-maker.gif';
+
       const embed = {
-        title: 'Total Price of T3 Materials',
-        description: `The total price at 100% of T3 materials is: ${calculateCoins(totalSellPrice)}.\nThe total price at 90% of T3 materials is: ${calculateCoins(totalPrice90.toFixed(0))}.`,
-        color: 0xffa500, // Embed border color (optional, you can change it or remove it)
+        title: '<:TP:1303367310538440848> T3 Materials Calculator',
+        color: 0x4169E1, // Color azul real para T3
         thumbnail: {
-          url: 'https://cdn.discordapp.com/attachments/1178687540232978454/1254195627114627162/ezgif.com-animated-gif-maker.gif?ex=66789c33&is=66774ab3&hm=4a54df4684fa3ad3807728ccc8eb61372cfdefc247070d8ca8bd97f0f79fefcf&'
-        }
+          url: T3_GIF_URL
+        },
+        fields: [
+          {
+            name: '<:Mystic_Forge:1303384550138839061> Requested Amount',
+            value: `${stackSize} units`,
+            inline: false
+          },
+          {
+            name: '<:bag:1303385936280813668> Price per Stack (250)',
+            value: `<:TP:1303367310538440848> 100%: ${calculateCoins(totalSellPrice)}\n<:TP:1303367310538440848> 90%: ${calculateCoins(totalPrice90.toFixed(0))}`,
+            inline: false
+          },
+          {
+            name: '<:T3_Vial_of_Blood:1303388161434456116> Materials Included',
+            value: itemDetails.map(item => 
+              `• **${item.name}**: ${calcularMonedas(item.unitPrice * totalQuantity)}`
+            ).join('\n'),
+            inline: false
+          },
+          {
+            name: '<:Trading_post_unlock:1303391934072623236> Total Price',
+            value: `**100%:** ${calculateCoins(totalSellPrice)}\n**90%:** ${calculateCoins(totalPrice90.toFixed(0))}`,
+            inline: false
+          }
+        ],
+        footer: {
+          text: 'Trading Post prices updated • Prices may vary',
+          icon_url: T3_GIF_URL
+        },
+        timestamp: new Date()
       };
 
       await interaction.reply({ embeds: [embed] });

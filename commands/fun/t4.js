@@ -32,13 +32,43 @@ module.exports = {
         return `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`;
       };
 
+      const T4_GIF_URL = 'https://cdn.discordapp.com/attachments/1178687540232978454/1254194723107766423/ezgif.com-animated-gif-maker.gif';
+
       const embed = {
-        title: 'Total Price of T4 Materials',
-        description: `The total price at 100% of T4 materials is: ${calculateCoins(totalSellPrice)}.\nThe total price at 90% of T4 materials is: ${calculateCoins(totalPrice90.toFixed(0))}.`,
-        color: 0x00ff00, // Embed border color (optional, you can change it or remove it)
+        title: '<:TP:1303367310538440848> T4 Materials Calculator',
+        color: 0x00ff00,
         thumbnail: {
-          url: 'https://cdn.discordapp.com/attachments/1178687540232978454/1254194723107766423/ezgif.com-animated-gif-maker.gif?ex=66789b5b&is=667749db&hm=776b9d0567a88c8d5df6c64ab715a7f6b3101402e67ce1fa178e97e4c17beb89&'
-        }
+          url: T4_GIF_URL
+        },
+        fields: [
+          {
+            name: '<:Mystic_Forge:1303384550138839061> Requested Amount',
+            value: `${stackSize} units`,
+            inline: false
+          },
+          {
+            name: '<:bag:1303385936280813668> Price per Stack (250)',
+            value: `<:TP:1303367310538440848> 100%: ${calculateCoins(totalSellPrice)}\n<:TP:1303367310538440848> 90%: ${calculateCoins(totalPrice90.toFixed(0))}`,
+            inline: false
+          },
+          {
+            name: '<:T4_Vial_of_Thick_Blood:1303387945943699558> Materials Breakdown',
+            value: itemDetails.map(item => 
+              `• **${item.name}**: ${calculateCoins(item.unitPrice * totalQuantity)}`
+            ).join('\n'),
+            inline: false
+          },
+          {
+            name: '<:Trading_post_unlock:1303391934072623236> Total Price',
+            value: `**90%:** ${calculateCoins(totalPrice90.toFixed(0))}`,
+            inline: false
+          }
+        ],
+        footer: {
+          text: 'Trading Post prices updated • Prices may vary',
+          icon_url: T4_GIF_URL
+        },
+        timestamp: new Date()
       };
 
       await interaction.reply({ embeds: [embed] });

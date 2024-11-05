@@ -37,5 +37,33 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
+client.on('messageCreate', async (message) => {
+  if (!message.content.startsWith('.')) return;
+
+  const args = message.content.slice(1).trim().split(/ +/);
+  const command = args.shift().toLowerCase();
+
+  if (command === 'kick') {
+    const userId = args[0];
+    
+    if (!userId) {
+      return message.reply('Debes proporcionar la ID del usuario.');
+    }
+
+    try {
+      const member = await message.guild.members.fetch(userId);
+      
+      if (!member) {
+        return message.reply('No se pudo encontrar al usuario.');
+      }
+
+      await member.kick();
+      message.reply(`Se ha expulsado al usuario con ID ${userId}.`);
+    } catch (error) {
+      message.reply('No se pudo expulsar al usuario. Verifica que tengo los permisos necesarios y que el ID sea válido.');
+    }
+  }
+});
+
 const token = process.env.DISCORD_TOKEN;
 

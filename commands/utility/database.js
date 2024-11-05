@@ -45,7 +45,9 @@ class DatabaseManager {
 
     async getApiKey(userId) {
         try {
+            console.log(`Método getApiKey llamado con userId:`, userId);
             const result = await this.apiKeys.findOne({ user_id: userId });
+            console.log(`Método getApiKey completado`);
             return result ? result.api_key : null;
         } catch (error) {
             console.error('Error getting API key:', error);
@@ -55,6 +57,7 @@ class DatabaseManager {
 
     async setApiKey(userId, apiKey) {
         try {
+            console.log(`Método setApiKey llamado con userId:`, userId);
             await this.apiKeys.updateOne(
                 { user_id: userId },
                 { 
@@ -65,6 +68,7 @@ class DatabaseManager {
                 },
                 { upsert: true }
             );
+            console.log(`Método setApiKey completado`);
             return true;
         } catch (error) {
             console.error('Error setting API key:', error);
@@ -74,7 +78,9 @@ class DatabaseManager {
 
     async deleteApiKey(userId) {
         try {
+            console.log(`Método deleteApiKey llamado con userId:`, userId);
             await this.apiKeys.deleteOne({ user_id: userId });
+            console.log(`Método deleteApiKey completado`);
             return true;
         } catch (error) {
             console.error('Error deleting API key:', error);
@@ -84,7 +90,9 @@ class DatabaseManager {
 
     async hasApiKey(userId) {
         try {
+            console.log(`Método hasApiKey llamado con userId:`, userId);
             const result = await this.apiKeys.findOne({ user_id: userId });
+            console.log(`Método hasApiKey completado`);
             return !!result;
         } catch (error) {
             console.error('Error checking API key:', error);

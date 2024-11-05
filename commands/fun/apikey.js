@@ -23,103 +23,65 @@ module.exports = {
                 .setDescription('Check if you have an API key stored')),
 
     async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
-        const subcommand = interaction.options.getSubcommand();
-        const userId = interaction.user.id;
-
         try {
-            console.log(`🔄 Processing ${subcommand} command for user ${userId}`);
+            console.log('Comando apikey iniciado');
+            console.log('Subcomando:', interaction.options.getSubcommand());
+            console.log('Usuario:', interaction.user.tag);
+
+            await interaction.reply({ 
+                content: 'Procesando tu solicitud...', 
+                ephemeral: true 
+            });
+
+            const subcommand = interaction.options.getSubcommand();
+            const userId = interaction.user.id;
+
+            if (!dbManager) {
+                throw new Error('Database manager not initialized');
+            }
 
             switch (subcommand) {
                 case 'add': {
                     const apiKey = interaction.options.getString('key');
-                    console.log('Attempting to store API key...');
+                    console.log('Intentando guardar API key para:', userId);
                     
-                    if (!apiKey) {
-                        throw new Error('No API key provided');
-                    }
-
-                    const success = await dbManager.setApiKey(userId, apiKey);
-                    console.log('Store API key result:', success);
-
-                    if (success) {
-                        await interaction.editReply({
-                            embeds: [{
-                                title: '✅ Success',
-                                description: 'API key successfully stored!',
-                                color: 0x00ff00,
-                                timestamp: new Date()
-                            }]
-                        });
-                    } else {
-                        throw new Error('Failed to store API key');
-                    }
+                    await dbManager.setApiKey(userId, apiKey);
+                    await interaction.editReply('✅ API key guardada correctamente');
                     break;
                 }
-
                 case 'remove': {
-                    console.log('Attempting to remove API key...');
-                    const hasKey = await dbManager.hasApiKey(userId);
+                    console.log('Intentando eliminar API key para:', userId);
                     
-                    if (hasKey) {
-                        const success = await dbManager.deleteApiKey(userId);
-                        if (success) {
-                            await interaction.editReply({
-                                embeds: [{
-                                    title: '🗑️ Success',
-                                    description: 'API key removed successfully.',
-                                    color: 0x00ff00,
-                                    timestamp: new Date()
-                                }]
-                            });
-                        } else {
-                            throw new Error('Failed to remove API key');
-                        }
-                    } else {
-                        await interaction.editReply({
-                            embeds: [{
-                                title: '⚠️ Notice',
-                                description: 'You don\'t have an API key stored.',
-                                color: 0xffff00,
-                                timestamp: new Date()
-                            }]
-                        });
-                    }
+                    await dbManager.deleteApiKey(userId);
+                    await interaction.editReply('✅ API key eliminada correctamente');
                     break;
                 }
-
                 case 'check': {
-                    console.log('Checking for API key...');
-                    const hasKey = await dbManager.hasApiKey(userId);
+                    console.log('Verificando API key para:', userId);
                     
-                    await interaction.editReply({
-                        embeds: [{
-                            title: hasKey ? '✅ API Key Found' : '❌ No API Key',
-                            description: hasKey 
-                                ? 'You have an API key stored.'
-                                : 'You don\'t have an API key stored.',
-                            color: hasKey ? 0x00ff00 : 0xff0000,
-                            timestamp: new Date()
-                        }]
-                    });
+                    const hasKey = await dbManager.hasApiKey(userId);
+                    await interaction.editReply(
+                        hasKey ? '✅ Tienes una API key guardada' : '❌ No tienes una API key guardada'
+                    );
                     break;
                 }
             }
         } catch (error) {
-            console.error('Error in apikey command:', error);
+            console.error('Error en comando apikey:', error);
+            console.error('Stack trace:', error.stack);
             
-            await interaction.editReply({
-                embeds: [{
-                    title: '❌ Error',
-                    description: 'An error occurred while processing your request.',
-                    fields: [{
-                        name: 'Error Details',
-                        value: `\`\`\`${error.message}\`\`\``
-                    }],
-                    color: 0xff0000,
-                    timestamp: new Date()
-                }]
-            });
+            try {
+                if (!interaction.replied) {
+                    await interaction.reply({
+                        content: '❌ Ocurrió un error al procesar tu solicitud',
+                        ephemeral: true
+                    });
+                } else {
+                    await interaction.editReply('❌ Ocurrió un error al procesar tu solicitud');
+                }
+            } catch (replyError) {
+                console.error('Error al enviar respuesta:', replyError);
+            }
         }
     },
 };

@@ -303,34 +303,51 @@ module.exports = {
         }
 
         // Crea el mensaje de tipo Embed con los precios y el número de ectos y monedas místicas requeridos
-        let description = `Sell price (Sell): ${calcularMonedas(precioVenta)}\n` +
-          `Buy price (Buy): ${calcularMonedas(precioCompra)}`;
-
-        description += `\n\n**Sell price of ${nombreObjeto} at ${descuento * 100}%**: ${calcularMonedas(precioDescuentoUnidad)}`;
-        description += `\n\n**_Sell price of ${quantity} ${nombreObjeto} at ${descuento * 100}%: ${calcularMonedas(precioDescuento)}_**`;
-
-        if (ectosRequeridos !== null) {
-          description += `\n\n**Ectos to give/receive**: ${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional (Total: ${ectosRequeridos} <:glob:1134942274598490292>)`;
-        }
-        if (monedasMisticasRequeridas !== null) {
-          description += `\n\n**MC to give/receive**: ${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional (Total: ${monedasMisticasRequeridas} <:mc:1276710341954502678>)`;
-        }
-
-        const ltcLink = `https://www.gw2bltc.com/en/item/${objetoId}`;
-        const iconURL = await getIconURL(objetoId);
-
         const embed = {
-          title: `Price of the item: ${nombreObjeto}`,
-          description: description,
-          color: 0x00ffff, // Color del borde del Embed (opcional, puedes cambiarlo o quitarlo)
-          thumbnail: { url: `${iconURL}` },
+          title: `💰 Precio de ${nombreObjeto}`,
+          color: getRarityColor(rarezaObjeto), // Nueva función para color basado en rareza
+          thumbnail: { url: imagenObjeto },
           fields: [
             {
-              name: 'Link to GW2BLTC',
-              value: ltcLink,
+              name: '📈 Precios de Mercado',
+              value: `Venta: ${calcularMonedas(precioVenta)}\nCompra: ${calcularMonedas(precioCompra)}`,
+              inline: false
             },
+            {
+              name: `💎 Precio con ${descuento * 100}% de descuento`,
+              value: `Por unidad: ${calcularMonedas(precioDescuentoUnidad)}\n**Total (${quantity}x): ${calcularMonedas(precioDescuento)}**`,
+              inline: false
+            }
           ],
+          footer: {
+            text: `ID: ${objetoId} • Rareza: ${rarezaObjeto}`,
+            icon_url: 'https://wiki.guildwars2.com/images/thumb/2/24/Trading_Post_%28map_icon%29.png/20px-Trading_Post_%28map_icon%29.png'
+          }
         };
+
+        // Agregar campos condicionales para ectos y monedas místicas
+        if (ectosRequeridos !== null) {
+          embed.fields.push({
+            name: '🌟 Equivalente en Ectos',
+            value: `${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} y ${ectosAdicionales} adicionales\nTotal: ${ectosRequeridos} <:glob:1134942274598490292>`,
+            inline: true
+          });
+        }
+
+        if (monedasMisticasRequeridas !== null) {
+          embed.fields.push({
+            name: '🪙 Equivalente en Monedas Místicas',
+            value: `${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} y ${monedasAdicionales} adicionales\nTotal: ${monedasMisticasRequeridas} <:mc:1276710341954502678>`,
+            inline: true
+          });
+        }
+
+        // Agregar enlaces
+        embed.fields.push({
+          name: '🔗 Enlaces',
+          value: `[GW2BLTC](https://www.gw2bltc.com/en/item/${objetoId}) • [Wiki](https://wiki.guildwars2.com/wiki/Special:Search/${encodeURIComponent(nombreObjeto)})`,
+          inline: false
+        });
 
         await interaction.reply({ embeds: [embed] });
       } else {
@@ -388,4 +405,19 @@ function findObjectIdByName(name) {
     }
   }
   return null;
+}
+
+// Agregar esta nueva función para determinar el color basado en la rareza
+function getRarityColor(rarity) {
+  const colors = {
+    Junk: 0x808080,      // Gris
+    Basic: 0xFFFFFF,     // Blanco
+    Fine: 0x62A4DA,      // Azul
+    Masterwork: 0x1A9306,// Verde
+    Rare: 0xFCD00B,      // Amarillo
+    Exotic: 0xFFA405,    // Naranja
+    Ascended: 0xFB3E8D,  // Rosa
+    Legendary: 0x4C139D  // Púrpura
+  };
+  return colors[rarity] || 0x000000;
 }

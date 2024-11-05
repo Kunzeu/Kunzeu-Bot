@@ -2,108 +2,111 @@ const { MongoClient } = require('mongodb');
 
 class DatabaseManager {
     constructor() {
-        try {
-            if (!process.env.MONGODB_URI) {
-                console.error('❌ MONGODB_URI no encontrada en variables de entorno');
-                return;
-            }
-            
-            this.uri = process.env.MONGODB_URI;
-            this.client = new MongoClient(this.uri);
-            this.dbName = 'kunzeubot';
-            
-            // Conectar inmediatamente
-            this.init();
-            
-        } catch (error) {
-            console.error('❌ Error en constructor de DatabaseManager:', error);
-        }
+        this.uri = process.env.MONGODB_URI;
+        this.client = new MongoClient(this.uri);
+        this.dbName = 'kunzeubot';
+        this.connect();
     }
 
-    async init() {
+    async connect() {
         try {
             await this.client.connect();
-            console.log('✅ Conectado a MongoDB');
+            console.log('✅ Connected to MongoDB');
             
             this.db = this.client.db(this.dbName);
-            this.apiKeys = this.db.collection('api_keys');
+            console.log(`📁 Using database: ${this.dbName}`);
             
-            // Verificar la conexión
-            await this.db.command({ ping: 1 });
-            console.log('🟢 Base de datos respondiendo');
-            
-            return true;
-        } catch (error) {
-            console.error('❌ Error de conexión MongoDB:', error);
-            return false;
-        }
-    }
-
-    async setApiKey(userId, apiKey) {
-        try {
-            if (!this.db || !this.apiKeys) {
-                await this.init();
+            // Crear colección si no existe
+            const collections = await this.db.listCollections().toArray();
+            if (!collections.some(c => c.name === 'api_keys')) {
+                await this.db.createCollection('api_keys');
+                console.log('📑 Created api_keys collection');
             }
             
-            const result = await this.apiKeys.updateOne(
-                { user_id: userId },
-                { $set: { api_key: apiKey } },
-                { upsert: true }
-            );
+            this.apiKeys = this.db.collection('api_keys');
             
-            console.log(`📝 API Key guardada para usuario ${userId}`);
+            // Crear índice único para user_id
+            await this.apiKeys.createIndex({ user_id: 1 }, { unique: true });
+            console.log('🔑 Created index on user_id');
+
+            // Verificar la conexión
+            const stats = await this.db.stats();
+            console.log(`📊 Database stats:
+                Collections: ${stats.collections}
+                Documents: ${stats.objects}
+            `);
+
             return true;
         } catch (error) {
-            console.error('❌ Error guardando API key:', error);
+            console.error('❌ MongoDB connection error:', error);
             return false;
         }
     }
 
     async getApiKey(userId) {
         try {
-            if (!this.db || !this.apiKeys) {
-                await this.init();
-            }
-            
             const result = await this.apiKeys.findOne({ user_id: userId });
             return result ? result.api_key : null;
         } catch (error) {
-            console.error('❌ Error obteniendo API key:', error);
+            console.error('Error getting API key:', error);
             return null;
+        }
+    }
+
+    async setApiKey(userId, apiKey) {
+        try {
+            await this.apiKeys.updateOne(
+                { user_id: userId },
+                { 
+                    $set: { 
+                        api_key: apiKey,
+                        updated_at: new Date()
+                    }
+                },
+                { upsert: true }
+            );
+            return true;
+        } catch (error) {
+            console.error('Error setting API key:', error);
+            return false;
         }
     }
 
     async deleteApiKey(userId) {
         try {
-            if (!this.db || !this.apiKeys) {
-                await this.init();
-            }
-            
-            const result = await this.apiKeys.deleteOne({ user_id: userId });
-            return result.deletedCount > 0;
+            await this.apiKeys.deleteOne({ user_id: userId });
+            return true;
         } catch (error) {
-            console.error('❌ Error eliminando API key:', error);
+            console.error('Error deleting API key:', error);
             return false;
         }
     }
 
     async hasApiKey(userId) {
         try {
-            if (!this.db || !this.apiKeys) {
-                await this.init();
-            }
-            
             const result = await this.apiKeys.findOne({ user_id: userId });
             return !!result;
         } catch (error) {
-            console.error('❌ Error verificando API key:', error);
+            console.error('Error checking API key:', error);
             return false;
+        }
+    }
+
+    async close() {
+        try {
+            await this.client.close();
+            console.log('MongoDB connection closed');
+        } catch (error) {
+            console.error('Error closing MongoDB connection:', error);
         }
     }
 }
 
-// Crear una única instancia
 const dbManager = new DatabaseManager();
 
-// Exportar la instancia
+process.on('SIGINT', async () => {
+    await dbManager.close();
+    process.exit(0);
+});
+
 module.exports = dbManager; 

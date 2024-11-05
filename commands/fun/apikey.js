@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const ApiKey = require('../../models/ApiKey');
+const dbManager = require('../utility/database.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -23,77 +23,53 @@ module.exports = {
                 .setDescription('Check if you have an API key stored')),
 
     async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
+        const subcommand = interaction.options.getSubcommand();
+        const userId = interaction.user.id;
+
         try {
-            // Log inicial
-            console.log('🔄 Comando apikey iniciado');
-            console.log('Subcomando:', interaction.options.getSubcommand());
-            console.log('Usuario:', interaction.user.tag);
-
-            await interaction.deferReply({ ephemeral: true });
-            const subcommand = interaction.options.getSubcommand();
-            const userId = interaction.user.id;
-
-            // Verificar conexión a MongoDB
-            console.log('Estado de Mongoose:', mongoose.connection.readyState);
-
             switch (subcommand) {
                 case 'add': {
-                    console.log('📝 Intentando añadir API key');
                     const apiKey = interaction.options.getString('key');
+                    const success = await dbManager.setApiKey(userId, apiKey);
                     
-                    // Verificar que tenemos la API key
-                    console.log('API Key recibida:', apiKey ? 'Sí' : 'No');
-
-                    const result = await ApiKey.findOneAndUpdate(
-                        { user_id: userId },
-                        { 
-                            api_key: apiKey,
-                            updated_at: new Date()
-                        },
-                        { upsert: true, new: true }
-                    );
-
-                    console.log('Resultado de guardado:', result ? 'Éxito' : 'Fallo');
-
                     await interaction.editReply({
                         embeds: [{
-                            title: '✅ Success',
-                            description: 'API key stored successfully!',
-                            color: 0x00ff00,
+                            title: success ? '✅ Success' : '❌ Error',
+                            description: success 
+                                ? 'API key successfully stored!'
+                                : 'Failed to store API key.',
+                            color: success ? 0x00ff00 : 0xff0000,
                             timestamp: new Date()
                         }]
                     });
                     break;
                 }
                 case 'remove': {
-                    console.log('🗑️ Intentando eliminar API key');
-                    const result = await ApiKey.findOneAndDelete({ user_id: userId });
-                    console.log('Resultado de eliminación:', result ? 'Encontrado y eliminado' : 'No encontrado');
+                    const success = await dbManager.deleteApiKey(userId);
                     
                     await interaction.editReply({
                         embeds: [{
-                            title: result ? '✅ Success' : '⚠️ Notice',
-                            description: result 
+                            title: success ? '✅ Success' : '⚠️ Notice',
+                            description: success 
                                 ? 'API key removed successfully.'
                                 : 'You don\'t have an API key stored.',
-                            color: result ? 0x00ff00 : 0xffff00,
+                            color: success ? 0x00ff00 : 0xffff00,
                             timestamp: new Date()
                         }]
                     });
                     break;
                 }
                 case 'check': {
-                    console.log('🔍 Verificando API key');
-                    const apiKey = await ApiKey.findOne({ user_id: userId });
-                    console.log('API Key encontrada:', apiKey ? 'Sí' : 'No');
+                    const hasKey = await dbManager.hasApiKey(userId);
                     
                     await interaction.editReply({
                         embeds: [{
-                            title: apiKey ? '✅ API Key Found' : '❌ No API Key',
-                            description: apiKey 
+                            title: hasKey ? '✅ API Key Found' : '❌ No API Key',
+                            description: hasKey 
                                 ? 'You have an API key stored.'
                                 : 'You don\'t have an API key stored.',
-                            color: apiKey ? 0x00ff00 : 0xff0000,
+                            color: hasKey ? 0x00ff00 : 0xff0000,
                             timestamp: new Date()
                         }]
                     });
@@ -101,9 +77,7 @@ module.exports = {
                 }
             }
         } catch (error) {
-            // Log detallado del error
-            console.error('❌ Error en comando apikey:', error);
-            console.error('Stack trace:', error.stack);
+            console.error('Error in apikey command:', error);
             
             await interaction.editReply({
                 embeds: [{

@@ -60,15 +60,6 @@ module.exports = {
             inline: false
           }
         ],
-        description: `Calculate the total price for T3 materials including:\n` +
-                    `• Vial of Potent Blood\n` +
-                    `• Potent Venom Sac\n` +
-                    `• Large Scale\n` +
-                    `• Sharp Claw\n` +
-                    `• Large Fang\n` +
-                    `• Intricate Totem\n` +
-                    `• Heavy Bone\n` +
-                    `• Luminous Dust`,
         footer: {
           text: 'Trading Post prices updated • Prices may vary',
           icon_url: T3_GIF_URL

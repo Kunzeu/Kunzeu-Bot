@@ -23,78 +23,102 @@ module.exports = {
                 .setDescription('Check if you have an API key stored')),
 
     async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
         const subcommand = interaction.options.getSubcommand();
         const userId = interaction.user.id;
 
         try {
+            console.log(`🔄 Processing ${subcommand} command for user ${userId}`);
+
             switch (subcommand) {
                 case 'add': {
                     const apiKey = interaction.options.getString('key');
-                    const success = await dbManager.setApiKey(userId, apiKey);
+                    console.log('Attempting to store API key...');
                     
-                    console.log(`API Key operation:
-                    User: ${interaction.user.tag} (${userId})
-                    Action: Add
-                    Success: ${success}
-                    Timestamp: ${new Date().toISOString()}
-                    `);
+                    if (!apiKey) {
+                        throw new Error('No API key provided');
+                    }
 
-                    await interaction.reply({
-                        embeds: [{
-                            title: success ? '✅ Success' : '❌ Error',
-                            description: success 
-                                ? 'API key successfully stored!'
-                                : 'Failed to store API key.',
-                            color: success ? 0x00ff00 : 0xff0000,
-                            fields: [
-                                {
-                                    name: 'User',
-                                    value: interaction.user.tag,
-                                    inline: true
-                                },
-                                {
-                                    name: 'Status',
-                                    value: success ? 'Stored' : 'Failed',
-                                    inline: true
-                                }
-                            ],
-                            timestamp: new Date()
-                        }],
-                        ephemeral: true
-                    });
-                    break;
-                }
-                case 'remove': {
-                    if (await dbManager.hasApiKey(userId)) {
-                        await dbManager.deleteApiKey(userId);
-                        await interaction.reply({
-                            content: '🗑️ API key removed successfully.',
-                            ephemeral: true
+                    const success = await dbManager.setApiKey(userId, apiKey);
+                    console.log('Store API key result:', success);
+
+                    if (success) {
+                        await interaction.editReply({
+                            embeds: [{
+                                title: '✅ Success',
+                                description: 'API key successfully stored!',
+                                color: 0x00ff00,
+                                timestamp: new Date()
+                            }]
                         });
                     } else {
-                        await interaction.reply({
-                            content: '⚠️ You don\'t have an API key stored.',
-                            ephemeral: true
+                        throw new Error('Failed to store API key');
+                    }
+                    break;
+                }
+
+                case 'remove': {
+                    console.log('Attempting to remove API key...');
+                    const hasKey = await dbManager.hasApiKey(userId);
+                    
+                    if (hasKey) {
+                        const success = await dbManager.deleteApiKey(userId);
+                        if (success) {
+                            await interaction.editReply({
+                                embeds: [{
+                                    title: '🗑️ Success',
+                                    description: 'API key removed successfully.',
+                                    color: 0x00ff00,
+                                    timestamp: new Date()
+                                }]
+                            });
+                        } else {
+                            throw new Error('Failed to remove API key');
+                        }
+                    } else {
+                        await interaction.editReply({
+                            embeds: [{
+                                title: '⚠️ Notice',
+                                description: 'You don\'t have an API key stored.',
+                                color: 0xffff00,
+                                timestamp: new Date()
+                            }]
                         });
                     }
                     break;
                 }
+
                 case 'check': {
+                    console.log('Checking for API key...');
                     const hasKey = await dbManager.hasApiKey(userId);
-                    await interaction.reply({
-                        content: hasKey 
-                            ? '✅ You have an API key stored.'
-                            : '❌ You don\'t have an API key stored.',
-                        ephemeral: true
+                    
+                    await interaction.editReply({
+                        embeds: [{
+                            title: hasKey ? '✅ API Key Found' : '❌ No API Key',
+                            description: hasKey 
+                                ? 'You have an API key stored.'
+                                : 'You don\'t have an API key stored.',
+                            color: hasKey ? 0x00ff00 : 0xff0000,
+                            timestamp: new Date()
+                        }]
                     });
                     break;
                 }
             }
         } catch (error) {
             console.error('Error in apikey command:', error);
-            await interaction.reply({
-                content: '❌ An error occurred while processing your request.',
-                ephemeral: true
+            
+            await interaction.editReply({
+                embeds: [{
+                    title: '❌ Error',
+                    description: 'An error occurred while processing your request.',
+                    fields: [{
+                        name: 'Error Details',
+                        value: `\`\`\`${error.message}\`\`\``
+                    }],
+                    color: 0xff0000,
+                    timestamp: new Date()
+                }]
             });
         }
     },

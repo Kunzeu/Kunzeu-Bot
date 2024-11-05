@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const apiKeyDB = require('../../database/database.js');
-const axios = require('axios');
+const dbManager = require('../utility/database.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -31,31 +30,16 @@ module.exports = {
             switch (subcommand) {
                 case 'add': {
                     const apiKey = interaction.options.getString('key');
-                    
-                    // Verificar API key con GW2 API
-                    try {
-                        await axios.get('https://api.guildwars2.com/v2/account', {
-                            headers: { 'Authorization': `Bearer ${apiKey}` }
-                        });
-                    } catch (error) {
-                        return await interaction.reply({
-                            content: '❌ Invalid API key. Please check your key and try again.',
-                            ephemeral: true
-                        });
-                    }
-
-                    // Guardar API key
-                    apiKeyDB.setApiKey(userId, apiKey);
+                    await dbManager.setApiKey(userId, apiKey);
                     await interaction.reply({
                         content: '✅ API key successfully stored!',
                         ephemeral: true
                     });
                     break;
                 }
-
                 case 'remove': {
-                    if (apiKeyDB.hasApiKey(userId)) {
-                        apiKeyDB.deleteApiKey(userId);
+                    if (await dbManager.hasApiKey(userId)) {
+                        await dbManager.deleteApiKey(userId);
                         await interaction.reply({
                             content: '🗑️ API key removed successfully.',
                             ephemeral: true
@@ -68,9 +52,8 @@ module.exports = {
                     }
                     break;
                 }
-
                 case 'check': {
-                    const hasKey = apiKeyDB.hasApiKey(userId);
+                    const hasKey = await dbManager.hasApiKey(userId);
                     await interaction.reply({
                         content: hasKey 
                             ? '✅ You have an API key stored.'

@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const axios = require('axios');
-const apiKeyDB = require('../../database/database.js');
+const dbManager = require('../utility/database.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,7 +11,7 @@ module.exports = {
     const userId = interaction.user.id;
 
     try {
-      const apiKey = await apiKeyDB.getApiKey(userId);
+      const apiKey = await dbManager.getApiKey(userId);
 
       if (!apiKey) {
         return await interaction.editReply({

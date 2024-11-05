@@ -22,7 +22,7 @@ mongoose.set('strictQuery', false);
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('✅ Conectado a MongoDB'))
+    .then(() => console.log(''))
     .catch(err => {
         console.error('❌ Error conectando a MongoDB:', err);
         process.exit(1);

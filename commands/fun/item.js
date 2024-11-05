@@ -302,20 +302,38 @@ module.exports = {
           monedasAdicionales = monedasMisticasRequeridas % 250; // Monedas adicionales
         }
 
-        // Crea el mensaje de tipo Embed con los precios y el número de ectos y monedas místicas requeridos
+        // Dentro de la función execute, después de obtener la respuesta de la API
+        const responseListings = await axios.get(`https://api.guildwars2.com/v2/commerce/listings/${objetoId}`);
+        const listings = responseListings.data;
+
+        // Función para formatear los listings de venta
+        function formatSellListings(listings, maxEntries = 5) {
+          if (!listings.sells || listings.sells.length === 0) return 'No sell listings available';
+
+          return listings.sells
+            .slice(0, maxEntries)
+            .map((entry, index) => `${index + 1}. ${calcularMonedas(entry.unit_price)} (${entry.quantity}x)`)
+            .join('\n');
+        }
+
         const embed = {
           title: `💰 Price of ${nombreObjeto}`,
-          color: getRarityColor(rarezaObjeto), // Nueva función para color basado en rareza
+          color: getRarityColor(rarezaObjeto),
           thumbnail: { url: imagenObjeto },
           fields: [
             {
-              name: '📈  TP prices',
+              name: '📈 TP prices',
               value: `Sell: ${calcularMonedas(precioVenta)}\nBuy: ${calcularMonedas(precioCompra)}`,
               inline: false
             },
             {
               name: `💎 Price with ${descuento * 100}% discount`,
               value: `Per unit: ${calcularMonedas(precioDescuentoUnidad)}\n**Total (${quantity}x): ${calcularMonedas(precioDescuento)}**`,
+              inline: false
+            },
+            {
+              name: '📊 Sell Listings',
+              value: formatSellListings(listings),
               inline: false
             }
           ],

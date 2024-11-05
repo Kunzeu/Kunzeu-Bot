@@ -1,5 +1,16 @@
 const { SlashCommandBuilder } = require('discord.js');
-const dbManager = require('../utility/database.js');
+const mongoose = require('mongoose');
+
+// Definir el esquema para las API keys
+const apiKeySchema = new mongoose.Schema({
+    user_id: { type: String, required: true, unique: true },
+    api_key: { type: String, required: true },
+    created_at: { type: Date, default: Date.now },
+    updated_at: { type: Date, default: Date.now }
+});
+
+// Crear el modelo si no existe
+const ApiKey = mongoose.models.ApiKey || mongoose.model('ApiKey', apiKeySchema);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -39,42 +50,41 @@ module.exports = {
                         throw new Error('No API key provided');
                     }
 
-                    const success = await dbManager.setApiKey(userId, apiKey);
-                    console.log('Store API key result:', success);
+                    await ApiKey.findOneAndUpdate(
+                        { user_id: userId },
+                        { 
+                            api_key: apiKey,
+                            updated_at: new Date()
+                        },
+                        { upsert: true, new: true }
+                    );
 
-                    if (success) {
-                        await interaction.editReply({
-                            embeds: [{
-                                title: '✅ Success',
-                                description: 'API key successfully stored!',
-                                color: 0x00ff00,
-                                timestamp: new Date()
-                            }]
-                        });
-                    } else {
-                        throw new Error('Failed to store API key');
-                    }
+                    console.log('API key stored successfully');
+
+                    await interaction.editReply({
+                        embeds: [{
+                            title: '✅ Success',
+                            description: 'API key successfully stored!',
+                            color: 0x00ff00,
+                            timestamp: new Date()
+                        }]
+                    });
                     break;
                 }
 
                 case 'remove': {
                     console.log('Attempting to remove API key...');
-                    const hasKey = await dbManager.hasApiKey(userId);
+                    const result = await ApiKey.findOneAndDelete({ user_id: userId });
                     
-                    if (hasKey) {
-                        const success = await dbManager.deleteApiKey(userId);
-                        if (success) {
-                            await interaction.editReply({
-                                embeds: [{
-                                    title: '🗑️ Success',
-                                    description: 'API key removed successfully.',
-                                    color: 0x00ff00,
-                                    timestamp: new Date()
-                                }]
-                            });
-                        } else {
-                            throw new Error('Failed to remove API key');
-                        }
+                    if (result) {
+                        await interaction.editReply({
+                            embeds: [{
+                                title: '🗑️ Success',
+                                description: 'API key removed successfully.',
+                                color: 0x00ff00,
+                                timestamp: new Date()
+                            }]
+                        });
                     } else {
                         await interaction.editReply({
                             embeds: [{
@@ -90,15 +100,15 @@ module.exports = {
 
                 case 'check': {
                     console.log('Checking for API key...');
-                    const hasKey = await dbManager.hasApiKey(userId);
+                    const apiKeyDoc = await ApiKey.findOne({ user_id: userId });
                     
                     await interaction.editReply({
                         embeds: [{
-                            title: hasKey ? '✅ API Key Found' : '❌ No API Key',
-                            description: hasKey 
+                            title: apiKeyDoc ? '✅ API Key Found' : '❌ No API Key',
+                            description: apiKeyDoc 
                                 ? 'You have an API key stored.'
                                 : 'You don\'t have an API key stored.',
-                            color: hasKey ? 0x00ff00 : 0xff0000,
+                            color: apiKeyDoc ? 0x00ff00 : 0xff0000,
                             timestamp: new Date()
                         }]
                     });

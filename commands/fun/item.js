@@ -304,23 +304,23 @@ module.exports = {
 
         // Crea el mensaje de tipo Embed con los precios y el número de ectos y monedas místicas requeridos
         const embed = {
-          title: `💰 Precio de ${nombreObjeto}`,
+          title: `💰 Price of ${nombreObjeto}`,
           color: getRarityColor(rarezaObjeto), // Nueva función para color basado en rareza
           thumbnail: { url: imagenObjeto },
           fields: [
             {
-              name: '📈 Precios de Mercado',
-              value: `Venta: ${calcularMonedas(precioVenta)}\nCompra: ${calcularMonedas(precioCompra)}`,
+              name: '📈  TP prices',
+              value: `Sell: ${calcularMonedas(precioVenta)}\nBuy: ${calcularMonedas(precioCompra)}`,
               inline: false
             },
             {
-              name: `💎 Precio con ${descuento * 100}% de descuento`,
-              value: `Por unidad: ${calcularMonedas(precioDescuentoUnidad)}\n**Total (${quantity}x): ${calcularMonedas(precioDescuento)}**`,
+              name: `💎 Price with ${descuento * 100}% discount`,
+              value: `Per unit: ${calcularMonedas(precioDescuentoUnidad)}\n**Total (${quantity}x): ${calcularMonedas(precioDescuento)}**`,
               inline: false
             }
           ],
           footer: {
-            text: `ID: ${objetoId} • Rareza: ${rarezaObjeto}`,
+            text: `ID: ${objetoId} • Rarity: ${rarezaObjeto}`,
             icon_url: 'https://wiki.guildwars2.com/images/thumb/2/24/Trading_Post_%28map_icon%29.png/20px-Trading_Post_%28map_icon%29.png'
           }
         };
@@ -328,23 +328,23 @@ module.exports = {
         // Agregar campos condicionales para ectos y monedas místicas
         if (ectosRequeridos !== null) {
           embed.fields.push({
-            name: '🌟 Equivalente en Ectos',
-            value: `${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} y ${ectosAdicionales} adicionales\nTotal: ${ectosRequeridos} <:glob:1134942274598490292>`,
+            name: '<:glob:1134942274598490292> Equivalent in Ectos',
+            value: `${numStacksEctos} stack${numStacksEctos === 1 ? '' : 's'} and ${ectosAdicionales} additional\nTotal: ${ectosRequeridos} <:glob:1134942274598490292>`,
             inline: true
           });
         }
 
         if (monedasMisticasRequeridas !== null) {
           embed.fields.push({
-            name: '🪙 Equivalente en Monedas Místicas',
-            value: `${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} y ${monedasAdicionales} adicionales\nTotal: ${monedasMisticasRequeridas} <:mc:1276710341954502678>`,
+            name: '<:mc:1276710341954502678> Equivalent in Mystic Coins',
+            value: `${numStacksMonedas} stack${numStacksMonedas === 1 ? '' : 's'} and ${monedasAdicionales} additional\nTotal: ${monedasMisticasRequeridas} <:mc:1276710341954502678>`,
             inline: true
           });
         }
 
         // Agregar enlaces
         embed.fields.push({
-          name: '🔗 Enlaces',
+          name: '🔗 Links',
           value: `[GW2BLTC](https://www.gw2bltc.com/en/item/${objetoId}) • [Wiki](https://wiki.guildwars2.com/wiki/Special:Search/${encodeURIComponent(nombreObjeto)})`,
           inline: false
         });

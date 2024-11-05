@@ -9,7 +9,6 @@ package-lock.json
 .env.*.local
 
 # Database
-src/database/database.js
 *.db
 *.sqlite
 
@@ -27,6 +26,7 @@ logs
 .DS_Store
 Thumbs.db
 
+# Project specific
 postids.db
 replit.nix
 .cache

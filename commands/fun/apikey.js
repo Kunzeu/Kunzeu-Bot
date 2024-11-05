@@ -28,39 +28,68 @@ module.exports = {
         const userId = interaction.user.id;
 
         try {
+            console.log(`🔄 Processing ${subcommand} command for user ${userId}`);
+
             switch (subcommand) {
                 case 'add': {
                     const apiKey = interaction.options.getString('key');
+                    console.log('Attempting to store API key...');
+                    
+                    if (!apiKey) {
+                        throw new Error('No API key provided');
+                    }
+
                     const success = await dbManager.setApiKey(userId, apiKey);
-                    
-                    await interaction.editReply({
-                        embeds: [{
-                            title: success ? '✅ Success' : '❌ Error',
-                            description: success 
-                                ? 'API key successfully stored!'
-                                : 'Failed to store API key.',
-                            color: success ? 0x00ff00 : 0xff0000,
-                            timestamp: new Date()
-                        }]
-                    });
+                    console.log('Store API key result:', success);
+
+                    if (success) {
+                        await interaction.editReply({
+                            embeds: [{
+                                title: '✅ Success',
+                                description: 'API key successfully stored!',
+                                color: 0x00ff00,
+                                timestamp: new Date()
+                            }]
+                        });
+                    } else {
+                        throw new Error('Failed to store API key');
+                    }
                     break;
                 }
+
                 case 'remove': {
-                    const success = await dbManager.deleteApiKey(userId);
+                    console.log('Attempting to remove API key...');
+                    const hasKey = await dbManager.hasApiKey(userId);
                     
-                    await interaction.editReply({
-                        embeds: [{
-                            title: success ? '✅ Success' : '⚠️ Notice',
-                            description: success 
-                                ? 'API key removed successfully.'
-                                : 'You don\'t have an API key stored.',
-                            color: success ? 0x00ff00 : 0xffff00,
-                            timestamp: new Date()
-                        }]
-                    });
+                    if (hasKey) {
+                        const success = await dbManager.deleteApiKey(userId);
+                        if (success) {
+                            await interaction.editReply({
+                                embeds: [{
+                                    title: '🗑️ Success',
+                                    description: 'API key removed successfully.',
+                                    color: 0x00ff00,
+                                    timestamp: new Date()
+                                }]
+                            });
+                        } else {
+                            throw new Error('Failed to remove API key');
+                        }
+                    } else {
+                        await interaction.editReply({
+                            embeds: [{
+                                title: '⚠️ Notice',
+                                description: 'You don\'t have an API key stored.',
+                                color: 0xffff00,
+                                timestamp: new Date()
+                            }]
+                        });
+                    }
                     break;
                 }
+
                 case 'check': {
+                    console.log('Checking for API key...');
                     const hasKey = await dbManager.hasApiKey(userId);
                     
                     await interaction.editReply({

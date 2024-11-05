@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const dbManager = require('../utility/db.js');
+const dbManager = require('../utility/database.js');
+const axios = require('axios');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,11 +25,19 @@ module.exports = {
       const embed = await formatDeliveryDetailsEmbed(deliveryDetails, interaction.user);
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
-      console.error('Error:', error);
-      await interaction.editReply({
-        content: '❌ An error occurred while processing your request.',
-        ephemeral: true
-      });
+      console.error('Error in delivery command:', error);
+      
+      if (error.message === 'Invalid API key') {
+        await interaction.editReply({
+          content: '❌ Your API key is invalid or has expired. Please update it using `/apikey`.',
+          ephemeral: true
+        });
+      } else {
+        await interaction.editReply({
+          content: '❌ An error occurred while processing your request.',
+          ephemeral: true
+        });
+      }
     }
   },
 };
@@ -54,32 +63,38 @@ async function formatDeliveryDetailsEmbed(details, user) {
 
   let itemsValue = 'No items to collect';
   if (details.items && details.items.length > 0) {
-    const itemsWithNames = await Promise.all(details.items.map(async item => {
-      try {
-        const itemDetails = await getItemDetails(item.id);
-        return {
-          name: itemDetails.name,
-          count: item.count,
-          rarity: itemDetails.rarity,
-          icon: itemDetails.icon
-        };
-      } catch (error) {
-        return {
-          name: `Unknown Item (${item.id})`,
-          count: item.count,
-          rarity: 'Basic',
-          icon: 'https://render.guildwars2.com/file/483E3939D1A7010BDEA2970FB27703CAAD5FBB0F/42684.png'
-        };
-      }
-    }));
+    try {
+      const itemsWithNames = await Promise.all(details.items.map(async item => {
+        try {
+          const itemDetails = await getItemDetails(item.id);
+          return {
+            name: itemDetails.name,
+            count: item.count,
+            rarity: itemDetails.rarity,
+            icon: itemDetails.icon
+          };
+        } catch (error) {
+          console.error(`Error fetching item ${item.id}:`, error);
+          return {
+            name: `Unknown Item (${item.id})`,
+            count: item.count,
+            rarity: 'Basic',
+            icon: 'https://render.guildwars2.com/file/483E3939D1A7010BDEA2970FB27703CAAD5FBB0F/42684.png'
+          };
+        }
+      }));
 
-    itemsValue = itemsWithNames
-      .map(item => `${getRarityEmoji(item.rarity)} **${item.name}** x${item.count}`)
-      .join('\n');
+      itemsValue = itemsWithNames
+        .map(item => `${getRarityEmoji(item.rarity)} **${item.name}** x${item.count}`)
+        .join('\n');
+    } catch (error) {
+      console.error('Error processing items:', error);
+      itemsValue = 'Error loading items';
+    }
   }
 
   return {
-    color: 0xdaa520, // Color dorado para Trading Post
+    color: 0xdaa520,
     author: {
       name: `${user.username}'s Trading Post Delivery`,
       icon_url: user.displayAvatarURL()
@@ -111,8 +126,13 @@ async function formatDeliveryDetailsEmbed(details, user) {
 }
 
 async function getItemDetails(itemId) {
-  const response = await axios.get(`https://api.guildwars2.com/v2/items/${itemId}?lang=en`);
-  return response.data;
+  try {
+    const response = await axios.get(`https://api.guildwars2.com/v2/items/${itemId}?lang=en`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching item ${itemId}:`, error);
+    throw error;
+  }
 }
 
 function getRarityEmoji(rarity) {

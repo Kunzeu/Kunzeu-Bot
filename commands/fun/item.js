@@ -307,12 +307,12 @@ module.exports = {
         const listings = responseListings.data;
 
         // Función para formatear los listings de venta
-        function formatSellListings(listings, maxEntries = 5) {
+        function formatSellListings(listings, maxEntries = 5) { // maxEntries es el número máximo de listings de venta a mostrar
           if (!listings.sells || listings.sells.length === 0) return 'No sell listings available';
 
           return listings.sells
             .slice(0, maxEntries)
-            .map((entry, index) => `${index + 1}. ${calcularMonedas(entry.unit_price)} (${entry.quantity}x)`)
+            .map((entry, index) => `${index +  1}. ${calcularMonedas(entry.unit_price)} (${entry.quantity}x)`)
             .join('\n');
         }
 
@@ -333,7 +333,7 @@ module.exports = {
             },
             {
               name: '📊 Sell Listings',
-              value: formatSellListings(listings),
+              value: formatSellListings(listings),  
               inline: false
             }
           ],

@@ -4,8 +4,8 @@ const moment = require('moment-timezone');
 
 const timezones = {
   "🇪🇸": "Europe/Madrid",
-  "🇦🇷": "America/Argentina/Buenos_Aires",
-  "🇨🇱": "America/Santiago",
+  "🇦🇷 🇨🇱": "America/Argentina/Buenos_Aires",
+  //"🇨🇱": "America/Santiago",
   "🇩🇴": "America/Santo_Domingo",
   "🇨🇴 🇵🇪": "America/Bogota",
   "🇲🇽 🇸🇻": "America/Mexico_City",

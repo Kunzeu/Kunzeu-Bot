@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { addUserApiKey, updateUserApiKey, getUserApiKey } = require('../utility/db');
+const dbManager = require('../utility/database.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,16 +12,18 @@ module.exports = {
     const userId = interaction.user.id;
 
     try {
-      if (await getUserApiKey(userId)) {
-        await updateUserApiKey(userId, apiKey);
-        await interaction.reply({ content: 'Your API key has been updated successfully.', ephemeral: true });
+      const existingKey = await dbManager.getApiKey(userId);
+
+      if (existingKey) {
+        await dbManager.setApiKey(userId, apiKey);
+        await interaction.reply({ content: '✅ Your API key has been updated successfully.', ephemeral: true });
       } else {
-        await addUserApiKey(userId, apiKey);
-        await interaction.reply({ content: 'Your API key has been added successfully.', ephemeral: true });
+        await dbManager.setApiKey(userId, apiKey);
+        await interaction.reply({ content: '✅ Your API key has been added successfully.', ephemeral: true });
       }
     } catch (error) {
       console.error('Error saving API key to the database:', error);
-      await interaction.reply({ content: 'There was an error saving the API key to the database.', ephemeral: true });
+      await interaction.reply({ content: '❌ There was an error saving the API key to the database.', ephemeral: true });
     }
   },
 };

@@ -8,7 +8,7 @@ class DatabaseManager {
         
         this.uri = process.env.MONGODB_URI;
         this.client = new MongoClient(this.uri);
-        this.dbName = 'kunzeubot'; // Nombre de tu base de datos
+        this.dbName = 'kunzeubot';
         this.connect();
     }
 
@@ -43,9 +43,10 @@ class DatabaseManager {
                 },
                 { upsert: true }
             );
+            console.log(`✅ API Key ${result.upsertedId ? 'añadida' : 'actualizada'} para usuario ${userId}`);
             return true;
         } catch (error) {
-            console.error('Error guardando API key:', error);
+            console.error('❌ Error guardando API key:', error);
             return false;
         }
     }
@@ -53,9 +54,10 @@ class DatabaseManager {
     async getApiKey(userId) {
         try {
             const result = await this.apiKeys.findOne({ user_id: userId });
+            console.log(`🔍 Buscando API key para usuario ${userId}: ${result ? 'Encontrada' : 'No encontrada'}`);
             return result ? result.api_key : null;
         } catch (error) {
-            console.error('Error obteniendo API key:', error);
+            console.error('❌ Error obteniendo API key:', error);
             return null;
         }
     }

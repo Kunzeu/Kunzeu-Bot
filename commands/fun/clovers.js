@@ -1,117 +1,143 @@
-const axios = require('axios');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
+const { getGw2ApiData } = require('../../utility/api.js');
 
-const API_BASE_URL = 'https://api.guildwars2.com/v2';
+// Configuración de emojis
+const EMOJIS = {
+  GOLD: '<:gold:1134754786705674290>',
+  SILVER: '<:silver:1134756015691268106>',
+  COPPER: '<:Copper:1134756013195661353>'
+};
 
-// Function to get the current price of an item by its ID
-async function getItemPrice(itemId) {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/commerce/prices/${itemId}`);
-    return response.data.sells.unit_price;
-  } catch (error) {
-    console.error('Error:', error.message);
-    return null;
+// IDs de items
+const ITEMS = {
+  ECTOPLASM: 19721,
+  MYSTIC_COIN: 19976,
+  CLOVER: 19675
+};
+
+class CloverCalculator {
+  static calculateCoins(copper) {
+    const gold = Math.floor(copper / 10000);
+    const remaining = copper % 10000;
+    const silver = Math.floor(remaining / 100);
+    const copperCoins = remaining % 100;
+
+    return `${gold}${EMOJIS.GOLD} ${silver}${EMOJIS.SILVER} ${copperCoins}${EMOJIS.COPPER}`;
   }
-}
 
-// Function to format gold amount with custom emojis
-function formatGoldWithEmojis(gold) {
-  const goldEmoji = '<:gold:1134754786705674290>';
-  const silverEmoji = '<:silver:1134756015691268106>';
-  const copperEmoji = '<:Copper:1134756013195661353>';
+  static async calculateMaterials(numClovers) {
+    try {
+      // Obtener precios actuales
+      const ectoPrice = await getGw2ApiData(`commerce/prices/${ITEMS.ECTOPLASM}`);
+      const coinPrice = await getGw2ApiData(`commerce/prices/${ITEMS.MYSTIC_COIN}`);
 
-  const goldAmount = Math.floor(gold / 10000);
-  const silverAmount = Math.floor((gold % 10000) / 100);
-  const copperAmount = gold % 100;
+      if (!ectoPrice?.sells?.unit_price || !coinPrice?.sells?.unit_price) {
+        throw new Error('Could not fetch material prices');
+      }
 
-  return `${goldEmoji} ${goldAmount}${goldEmoji} ${silverAmount}${silverEmoji} ${copperAmount.toFixed(0)}${copperEmoji}`;
-}
+      // Calcular cantidades y precios
+      const materialsNeeded = numClovers * 3;
+      const ectoTotal = ectoPrice.sells.unit_price * materialsNeeded;
+      const coinTotal = coinPrice.sells.unit_price * materialsNeeded;
+      const totalCost = ectoTotal + coinTotal;
 
-// Function to calculate materials required for Mystic Clovers
-async function calculateMaterialsForMysticClovers(numMysticClovers) {
-  const materialsPerClover = {
-    ectoplasm: 0.9 * await getItemPrice(19721), // Glob of Ectoplasm ID, 90% of sell price
-    mysticCoin: 0.9 * await getItemPrice(19976), // Mystic Coin ID, 90% of sell price
-    philosophersStone: 1400 * 0.25, // Price of each Spirit Shard to obtain Philosophers Stone
-    spiritShardPrice: 0.25 // Price of Spirit Shard (considered for consistency)
-  };
+      return {
+        quantities: {
+          ecto: materialsNeeded,
+          coins: materialsNeeded,
+          shards: numClovers
+        },
+        prices: {
+          ecto: ectoTotal,
+          coins: coinTotal,
+          total: totalCost,
+          totalDiscounted: Math.floor(totalCost * 0.9)
+        }
+      };
+    } catch (error) {
+      console.error('Error calculating materials:', error);
+      throw error;
+    }
+  }
 
-  const materials = {
-    ectoplasm: materialsPerClover.ectoplasm,
-    mysticCoin: materialsPerClover.mysticCoin,
-    philosophersStone: materialsPerClover.philosophersStone,
-    spiritShards: materialsPerClover.spiritShardPrice
-  };
+  static createEmbed(numClovers, materials) {
+    const embed = {
+      title: 'Mystic Clover Calculator',
+      description: `Materials required to obtain ${numClovers} Mystic Clovers:`,
+      color: 0xFFFFFF,
+      thumbnail: {
+        url: 'https://render.guildwars2.com/file/7E0602C36ED3C5038A45C422B3DF10F3B8BC3BD2/42684.png'
+      },
+      fields: [
+        {
+          name: 'Total Cost (100%)',
+          value: this.calculateCoins(materials.prices.total),
+          inline: true
+        },
+        {
+          name: 'Total Cost (90%)',
+          value: this.calculateCoins(materials.prices.totalDiscounted),
+          inline: true
+        },
+        {
+          name: '\u200b',
+          value: '\u200b',
+          inline: false
+        },
+        {
+          name: 'Materials Required',
+          value: `• ${materials.quantities.ecto} Glob of Ectoplasm (${this.calculateCoins(materials.prices.ecto)})\n` +
+                 `• ${materials.quantities.coins} Mystic Coins (${this.calculateCoins(materials.prices.coins)})\n` +
+                 `• ${materials.quantities.shards} Spirit Shards\n\n` +
+                 `Average Success Rate: 33%`,
+          inline: false
+        },
+        {
+          name: 'Note',
+          value: '• Prices are based on current Trading Post sell listings\n' +
+                 '• 90% price accounts for Trading Post fees\n' +
+                 '• Each attempt requires 3 Ectoplasm, 3 Mystic Coins and 1 Spirit Shard',
+          inline: false
+        }
+      ]
+    };
 
-  const totalMaterials = {
-    ectoplasm: materials.ectoplasm * numMysticClovers * 3, // 3 Ectos per Mystic Clover
-    mysticCoin: materials.mysticCoin * numMysticClovers * 3, // 3 Mystic Coins per Mystic Clover
-    philosophersStone: materials.philosophersStone * Math.ceil(numMysticClovers / 3), // Rounded up to get enough Philosophers Stone
-    spiritShards: materials.spiritShards * Math.ceil(numMysticClovers / 3) // Rounded up to get enough Spirit Shards
-  };
-
-  return totalMaterials;
+    return embed;
+  }
 }
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('clovers')
-    .setDescription('Calculates the value of materials required to craft Mystic Clovers.')
+    .setDescription('Calculate materials needed for Mystic Clovers')
     .addIntegerOption(option =>
       option
         .setName('quantity')
-        .setDescription('The quantity of Mystic Clovers to craft')
+        .setDescription('Number of Mystic Clovers to craft')
         .setRequired(true)
+        .setMinValue(1)
+        .setMaxValue(1000)
     ),
+
   async execute(interaction) {
-    const numMysticClovers = interaction.options.getInteger('quantity');
+    try {
+      await interaction.deferReply();
 
-    if (isNaN(numMysticClovers) || numMysticClovers <= 0) {
-      return interaction.reply('Please provide a valid quantity of Mystic Clovers to craft.');
-    }
+      const numClovers = interaction.options.getInteger('quantity');
+      const materials = await CloverCalculator.calculateMaterials(numClovers);
+      const embed = CloverCalculator.createEmbed(numClovers, materials);
 
-    // Calculate required materials to obtain Mystic Clovers
-    const materialsRequired = await calculateMaterialsForMysticClovers(numMysticClovers);
+      await interaction.editReply({ embeds: [embed] });
 
-    // Calculate total cost to obtain Mystic Clovers
-    const totalCost = materialsRequired.ectoplasm + materialsRequired.mysticCoin;
-
-    // Create Embed message with prices
-    const ltcLink = `https://www.gw2bltc.com/en/item/19675`;
-    const iconURL = await getIconURL('https://api.guildwars2.com/v2/items/19675'); 
-
-    const embed = {
-      title: `Materials required to obtain ${numMysticClovers} Mystic Clovers:`,
-      thumbnail: { url: `${iconURL}` },
-      fields: [
-        {
-          name: `${numMysticClovers * 3} Glob of Ectoplasm:`,
-          value: formatGoldWithEmojis(materialsRequired.ectoplasm),
-        },
-        {
-          name: `${numMysticClovers * 3} Mystic Coin:`,
-          value: formatGoldWithEmojis(materialsRequired.mysticCoin),
-        },
-        {
-          name: 'Link to GW2BLTC',
-          value: `${ltcLink}`,
-        },
-      ],
-      description: `Total cost to obtain ${numMysticClovers} Mystic Clovers: ${formatGoldWithEmojis(totalCost)}`,
-      color: 0xFFFFFF, // White color
-    };
-
-    async function getIconURL(itemId) {
-      try {
-        const response = await axios.get(`https://api.guildwars2.com/v2/items/19675`);
-        const itemDetails = response.data;
-        return itemDetails.icon;
-      } catch (error) {
-        console.error('Error getting icon URL from API:', error.message);
-        return null;
+    } catch (error) {
+      console.error('Error in clovers command:', error);
+      const errorMessage = 'There was an error calculating material prices. Please try again later.';
+      
+      if (interaction.deferred) {
+        await interaction.editReply({ content: errorMessage });
+      } else {
+        await interaction.reply({ content: errorMessage, ephemeral: true });
       }
     }
-
-    await interaction.reply({ embeds: [embed] });
   },
 };

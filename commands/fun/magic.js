@@ -12,15 +12,20 @@ const EMOJIS = {
 const MATERIALS = [
   { name: "Vial of Powerful Blood", itemId: 24295, stackSize: 100, type: "T6" },
   { name: "Powerful Venom Sac", itemId: 24283, stackSize: 100, type: "T6" },
-  { name: "Large Bone", itemId: 24341, stackSize: 100, type: "T6" },
-  { name: "Powerful Fang", itemId: 24357, stackSize: 100, type: "T6" },
-  { name: "Armored Scale", itemId: 24289, stackSize: 100, type: "T6" },
-  { name: "Large Claw", itemId: 24351, stackSize: 100, type: "T6" },
-  { name: "Ancient Bone", itemId: 24358, stackSize: 250, type: "T5" },
+  { name: "Elaborate Totem", itemId: 24300, stackSize: 100, type: "T6" },
+  { name: "Pile of Crystalline Dust", itemId: 24277, stackSize: 100, type: "T6" },
   { name: "Vial of Potent Blood", itemId: 24294, stackSize: 250, type: "T5" },
-  { name: "Large Fang", itemId: 24356, stackSize: 250, type: "T5" },
-  { name: "Vicious Fang", itemId: 24357, stackSize: 250, type: "T5" },
-  { name: "Vicious Claw", itemId: 24351, stackSize: 250, type: "T5" }
+  { name: "Potent Venom Sac", itemId: 24282, stackSize: 250, type: "T5" },
+  { name: "Intricate Totem", itemId: 24299, stackSize: 250, type: "T5" },
+  { name: "Pile of Incandescent Dust", itemId: 24276, stackSize: 250, type: "T5" },
+  { name: "Vial of Thick Blood", itemId: 24293, stackSize: 50, type: "T4" },
+  { name: "Full Venom Sac", itemId: 24281, stackSize: 50, type: "T4" },
+  { name: "Engraved Totem", itemId: 24298, stackSize: 50, type: "T4" },
+  { name: "Pile of Luminous Dust", itemId: 24275, stackSize: 50, type: "T4" },
+  { name: "Vial of Blood", itemId: 24292, stackSize: 50, type: "T3" },
+  { name: "Venom Sac", itemId: 24280, stackSize: 50, type: "T3" },
+  { name: "Totem", itemId: 24297, stackSize: 50, type: "T3" },
+  { name: "Pile of Radiant Dust", itemId: 24274, stackSize: 50, type: "T3" }
 ];
 
 class MaterialPriceCalculator {
@@ -65,42 +70,37 @@ class MaterialPriceCalculator {
     };
   }
 
-  static createEmbed(totalPrice, price90Percent, materialFields) {
-    return {
-      title: 'Magic Material Prices',
-      description: 'Current prices for magic materials on the Trading Post:',
-      color: 0x4287f5,
+  static createEmbed(priceData) {
+    const totalPrice = priceData.reduce((sum, item) => sum + item.totalPrice, 0);
+    const discountedPrice = Math.floor(totalPrice * 0.9);
+
+    const embed = {
+      title: ' Gift of Condensed Magic Material Prices',
+      description: 'Current Trading Post prices for Magic materials:',
+      color: 4746549,
       thumbnail: {
         url: 'https://render.guildwars2.com/file/09F42753049B20A54F6017B1F26A9447613016FE/1302179.png'
       },
       fields: [
         {
           name: 'Total Price (100%)',
-          value: MaterialPriceCalculator.calculateCoins(totalPrice),
+          value: this.calculateCoins(totalPrice),
           inline: true
         },
         {
           name: 'Total Price (90%)',
-          value: MaterialPriceCalculator.calculateCoins(price90Percent),
+          value: this.calculateCoins(discountedPrice),
           inline: true
         },
         {
-          name: '\u200b',
-          value: '\u200b',
-          inline: false
-        },
-        ...materialFields,
-        {
           name: 'Note',
-          value: 'Prices are based on current Trading Post sell listings.\nThe 90% price represents the typical selling price after Trading Post fees.',
+          value: '• Prices are based on current Trading Post sell listings\n• 90% price accounts for Trading Post fees\n• Prices update every few minutes',
           inline: false
         }
-      ],
-      footer: {
-        text: 'Last updated'
-      },
-      timestamp: new Date()
+      ]
     };
+
+    return embed;
   }
 
   static async execute(interaction) {
@@ -110,7 +110,7 @@ class MaterialPriceCalculator {
       const { totalPrice, materials } = await MaterialPriceCalculator.calculateMaterialPrices(MATERIALS);
       const price90Percent = Math.floor(totalPrice * 0.9);
 
-      const embed = MaterialPriceCalculator.createEmbed(totalPrice, price90Percent, materials);
+      const embed = MaterialPriceCalculator.createEmbed(materials);
       
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {

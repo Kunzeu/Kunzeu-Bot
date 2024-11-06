@@ -87,15 +87,8 @@ class MaterialPriceCalculator {
           inline: true
         },
         {
-          name: '\u200b',
-          value: '\u200b',
-          inline: false
-        },
-        {
           name: 'Note',
-          value: '• Prices are based on current Trading Post sell listings\n' +
-                 '• 90% price accounts for Trading Post fees\n' +
-                 '• Prices update every few minutes',
+          value: '• Prices are based on current Trading Post sell listings\n• 90% price accounts for Trading Post fees\n• Prices update every few minutes',
           inline: false
         }
       ]

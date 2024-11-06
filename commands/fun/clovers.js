@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getGw2ApiData } = require('../../utility/api.js');
+const { getGw2ApiData } = require('../utility/api.js');
 
 // Configuración de emojis
 const EMOJIS = {

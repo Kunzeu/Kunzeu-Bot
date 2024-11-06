@@ -28,9 +28,9 @@ class MaterialPriceCalculator {
     const gold = Math.floor(copper / 10000);
     const remaining = copper % 10000;
     const silver = Math.floor(remaining / 100);
-    const copper = remaining % 100;
+    const copperCoins = remaining % 100;
 
-    return `${gold}${EMOJIS.GOLD} ${silver}${EMOJIS.SILVER} ${copper}${EMOJIS.COPPER}`;
+    return `${gold}${EMOJIS.GOLD} ${silver}${EMOJIS.SILVER} ${copperCoins}${EMOJIS.COPPER}`;
   }
 
   static async calculateMaterialPrices(materials) {

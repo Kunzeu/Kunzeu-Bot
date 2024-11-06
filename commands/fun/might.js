@@ -91,7 +91,12 @@ class MaterialPriceCalculator {
           value: '• Prices are based on current Trading Post sell listings\n• 90% price accounts for Trading Post fees\n• Prices update every few minutes',
           inline: false
         }
-      ]
+      ],
+      footer: {
+        text: 'Trading Post • Prices and items may vary',
+        icon_url: 'https://render.guildwars2.com/file/CCA4C2F8AF79D2EB0CFF381E3DDA3EA792BA7412/1302180.png'
+      },
+      timestamp: new Date()
     };
 
     return embed;

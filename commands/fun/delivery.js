@@ -105,7 +105,7 @@ async function formatDeliveryDetailsEmbed(details, user) {
     },
     fields: [
       {
-        name: '<:bag:1303385936280813668> Coins to Collect',
+        name: '<:gold:1134754786705674290> Coins to Collect',
         value: details.coins > 0 
           ? `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`
           : 'No coins to collect',
@@ -119,7 +119,7 @@ async function formatDeliveryDetailsEmbed(details, user) {
     ],
     footer: {
       text: 'Trading Post • Prices and items may vary',
-      icon_url: 'https://wiki.guildwars2.com/images/thumb/2/24/Trading_Post_%28map_icon%29.png/20px-Trading_Post_%28map_icon%29.png'
+      icon_url: 'https://wiki.guildwars2.com/images/8/81/Personal_Trader_Express.png'
     },
     timestamp: new Date()
   };

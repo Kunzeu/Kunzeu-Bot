@@ -69,7 +69,7 @@ class MaterialPriceCalculator {
     const discountedPrice = Math.floor(totalPrice * 0.9);
 
     const embed = {
-      title: 'Condensed Might Material Prices',
+      title: 'Gift of Condensed Might Material Prices',
       description: 'Current Trading Post prices for Condensed Might materials:',
       color: 7154499,
       thumbnail: {

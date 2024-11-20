@@ -52,6 +52,9 @@ client.once(Events.ClientReady, () => {
     console.log('✅ Bot Ready!');
     client.user.setStatus('idle');
     client.user.setActivity('Guild Wars 2');
+
+    // Llamar al módulo de recordatorios semanales
+    require('./commands/fun/recordar')(client); // Asegúrate de que la ruta sea correcta
 });
 
 client.on(Events.InteractionCreate, async interaction => {

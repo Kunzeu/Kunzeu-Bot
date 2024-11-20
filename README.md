@@ -19,21 +19,20 @@ Kunzeu Bot is a Discord bot dedicated to Guild Wars 2 players. It utilizes the G
 <img src="https://i.gyazo.com/91274e385a10611852f4fed2d79de2ea.png" alt="Screenshot 3" style="margin-bottom: 20px;">
 
 
-## Hello! Here are the instructions for use:
-
-- **`/item`:** This command will help you see the value of items.
-- **`/id`:** Search for items by their ID.
-- **`/t3`:** This command will help you see the total value of T3 level items.
-- **`/t4`:** This command will help you see the total value of T4 level items.
-- **`/t5`:** This command will help you see the total value of T5 level items.
-- **`/t6`:** This command will help you see the total value of T6 level items.
-- **`/clovers`:** This command lets you know the price of a clover at this moment. Currently, it calculates the value of one clover.
-- **`/delivery`:** This command allows you to see the number of items you have in delivery.
-- **`/gem`:** This command lets you see the price of gems (still in testing).
-- **`/might`:** This command lets you see the price of the Gift of Might.
-- **`/magic`:** This command lets you see the price of the Gift of Magic.
-- **`/apikey`:** Allows you to add or update your API key in the bot to use certain commands.
-- **`/apidel`:** Allows you to delete your API key from the bot to stop using certain commands.
+## Hello! Here are the usage instructions:\n\n' +
+      '• `/apikey`: Allows you to add or update your API key in the bot for certain commands.\n' +
+      '• `/apidel`: Allows you to delete your API key from the bot to stop using certain commands.\n' +
+      '• `/clovers`: This command informs you of the current price of a single Clover.\n' +
+      '• `/delivery`: This command allows you to see the number of items you have in delivery.\n' +
+      '• `/gi`: Displays fixed prices for the GOM and GOJM.\n' +
+      '• `/hora`: Displays the current time.\n' +
+      '• `/item`: This command helps you see the value of items.\n' +
+      '• `/magic`: This command allows you to see the price of the Gift of Magic.\n' +
+      '• `/might`: This command allows you to see the price of the Gift of Might.\n' +
+      '• `/t3`: This command helps you see the total value of T3 items.\n' +
+      '• `/t4`: This command helps you see the total value of T4 items.\n' +
+      '• `/t5`: This command helps you see the total value of T5 items.\n' +
+      '• `/t6`: This command helps you see the total value of T6 items.\n';
 
 ## Installation
 
@@ -55,6 +54,7 @@ Kunzeu Bot is a third-party application and is not affiliated with or endorsed b
 ## Contact
 
 You can contact me on Discord: [Kunzeu](https://discord.com/users/552563672162107431)
+https://kunzeu.vercel.app/
 
 ## License
 

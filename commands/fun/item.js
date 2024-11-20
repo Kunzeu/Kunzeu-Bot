@@ -70,7 +70,7 @@ const itemsMap = new Map([
   [29183, {mainName: 'Venom', altNames: ['Veneno']}],
   [29184, {mainName: 'Howl', altNames: ['Aullido']}],
   [29185, {mainName: 'Dusk', altNames: ['Anochecer']}],
-  [48917, {mainName: 'Toxic Focusing Crystal', altNames: ['Crystal', 'Toxic']}],
+  [48917, {mainName: 'Toxic Tuning Crystal', altNames: ['Crystal', 'Toxic', 'Tuning']}],
   [89216, {mainName: 'Charm of Skill', altNames: ['Habilidad', 'Skill']}],
   [89258, {mainName: 'Charm of Potence', altNames: ['Potencia', 'Potence']}],
   [89103, {mainName: 'Charm of Brilliance', altNames: ['Brillantez', 'Brilliance']}],
@@ -209,8 +209,9 @@ const itemsMap = new Map([
   [88045, {mainName: 'Glyph of Volatility', altNames: ['glifo volatilidad', 'volatilidad', 'Volaty']}],
   [36041, {mainName: 'Piece of Candy Corn', altNames: ['Caramelo', 'candy', 'Trozo de caramelo', 'trozo']}],
   [47909, {mainName: 'Candy Corn Cob', altNames: ['Corn', 'barra', 'Barra de caramelo']}],
-
-
+  [19685, {mainName: 'Orichalcum Ingot', altNames: ['Ingot', 'Orichalcum', 'Oricalco']}],
+  [19701, {mainName: 'Orichalcum Ore', altNames: ['Ori', 'Mineral de oricalco']}],
+  [19737, {mainName: 'Cured Hardened Leather Square', altNames: ['Retal', 'Retal de cuero curado endurecido']}],
 
 ]);
 

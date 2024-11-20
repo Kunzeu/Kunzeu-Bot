@@ -208,7 +208,7 @@ const itemsMap = new Map([
   [75919, {mainName: 'Fractal Encryption', altNames: ['Fractal']}],
   [88045, {mainName: 'Glyph of Volatility', altNames: ['glifo volatilidad', 'volatilidad', 'Volaty']}],
   [36041, {mainName: 'Piece of Candy Corn', altNames: ['Caramelo', 'candy', 'Trozo de caramelo', 'trozo']}],
-  [47909, {mainName: 'Candy Corn Cob', altNames: ['Corn', 'barra', 'Barra de caramelo']}],
+  [103815, {mainName: 'Klobjarne Geirr', altNames: ['Geirr', 'Klobjarne']}],
   [19685, {mainName: 'Orichalcum Ingot', altNames: ['Ingot', 'Orichalcum', 'Oricalco']}],
   [19701, {mainName: 'Orichalcum Ore', altNames: ['Ori', 'Mineral de oricalco']}],
   [19737, {mainName: 'Cured Hardened Leather Square', altNames: ['Retal', 'Retal de cuero curado endurecido']}],

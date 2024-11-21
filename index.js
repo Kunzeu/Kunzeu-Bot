@@ -51,10 +51,14 @@ for (const folder of commandFolders) {
 client.once(Events.ClientReady, () => {
     console.log('✅ Bot Ready!');
     client.user.setStatus('idle');
-    client.user.setActivity('Guild Wars 2');
 
-    // Llamar al módulo de recordatorios semanales
-    require('./commands/fun/recordar')(client); // Asegúrate de que la ruta sea correcta
+    // Si deseas actualizar el estado de juego periódicamente, puedes hacerlo aquí
+    setInterval(() => {
+        // Aquí puedes actualizar otras variables si es necesario
+        client.user.setActivity('Guild Wars 2', {
+            type: 'PLAYING',
+        });
+    }, 60000); // Actualiza cada minuto
 });
 
 client.on(Events.InteractionCreate, async interaction => {

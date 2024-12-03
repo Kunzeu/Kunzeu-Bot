@@ -4,8 +4,8 @@ const axios = require('axios');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('delivery')
-    .setDescription('Displays Trading Post delivery details'),
+    .setName('transactions')
+    .setDescription('Muestra las transacciones del Trading Post'),
 
   async execute(interaction) {
     await interaction.deferReply();
@@ -16,25 +16,25 @@ module.exports = {
 
       if (!apiKey) {
         return await interaction.editReply({
-          content: '⚠️ You don\'t have a linked API key. Use `/apikey` to link your Guild Wars 2 API key.',
+          content: '⚠️ No tienes una API key vinculada. Usa `/apikey` para vincular tu API key de Guild Wars 2.',
           ephemeral: true
         });
       }
 
-      const deliveryDetails = await getDeliveryDetails(apiKey);
-      const embed = await formatDeliveryDetailsEmbed(deliveryDetails, interaction.user);
+      const transactions = await getTransactions(apiKey);
+      const embed = await formatTransactionsEmbed(transactions, interaction.user);
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
-      console.error('Error in delivery command:', error);
+      console.error('Error in transactions command:', error);
       
       if (error.message === 'Invalid API key') {
         await interaction.editReply({
-          content: '❌ Your API key is invalid or has expired. Please update it using `/apikey`.',
+          content: '❌ Tu API key es inválida o ha expirado. Por favor actualízala usando `/apikey`.',
           ephemeral: true
         });
       } else {
         await interaction.editReply({
-          content: '❌ An error occurred while processing your request.',
+          content: '❌ Ocurrió un error al procesar tu solicitud.',
           ephemeral: true
         });
       }
@@ -42,12 +42,34 @@ module.exports = {
   },
 };
 
-async function getDeliveryDetails(apiKey) {
+async function getTransactions(apiKey) {
   try {
-    const response = await axios.get('https://api.guildwars2.com/v2/commerce/delivery', {
+    const currentBuys = await axios.get('https://api.guildwars2.com/v2/commerce/transactions/current/buys', {
       headers: { 'Authorization': `Bearer ${apiKey}` }
     });
-    return response.data;
+    
+    const currentSells = await axios.get('https://api.guildwars2.com/v2/commerce/transactions/current/sells', {
+      headers: { 'Authorization': `Bearer ${apiKey}` }
+    });
+
+    const historyBuys = await axios.get('https://api.guildwars2.com/v2/commerce/transactions/history/buys', {
+      headers: { 'Authorization': `Bearer ${apiKey}` }
+    });
+
+    const historySells = await axios.get('https://api.guildwars2.com/v2/commerce/transactions/history/sells', {
+      headers: { 'Authorization': `Bearer ${apiKey}` }
+    });
+
+    return {
+      current: {
+        buys: currentBuys.data,
+        sells: currentSells.data
+      },
+      history: {
+        buys: historyBuys.data,
+        sells: historySells.data
+      }
+    };
   } catch (error) {
     if (error.response?.status === 401) {
       throw new Error('Invalid API key');
@@ -56,78 +78,76 @@ async function getDeliveryDetails(apiKey) {
   }
 }
 
-async function formatDeliveryDetailsEmbed(details, user) {
-  const gold = Math.floor(details.coins / 10000);
-  const silver = Math.floor((details.coins % 10000) / 100);
-  const copper = details.coins % 100;
-
-  let itemsValue = 'No items to collect';
-  if (details.items && details.items.length > 0) {
-    try {
-      const itemsWithNames = await Promise.all(details.items.map(async item => {
-        try {
-          const itemDetails = await getItemDetails(item.id);
-          return {
-            name: itemDetails.name,
-            count: item.count,
-            rarity: itemDetails.rarity,
-            icon: itemDetails.icon
-          };
-        } catch (error) {
-          console.error(`Error fetching item ${item.id}:`, error);
-          return {
-            name: `Unknown Item (${item.id})`,
-            count: item.count,
-            rarity: 'Basic',
-            icon: 'https://render.guildwars2.com/file/483E3939D1A7010BDEA2970FB27703CAAD5FBB0F/42684.png'
-          };
-        }
-      }));
-
-      itemsValue = itemsWithNames
-        .map(item => `${getRarityEmoji(item.rarity)} **${item.name}** x${item.count}`)
-        .join('\n');
-    } catch (error) {
-      console.error('Error processing items:', error);
-      itemsValue = 'Error loading items';
-    }
-  }
+async function formatTransactionsEmbed(transactions, user) {
+  const currentBuys = await formatTransactionList(transactions.current.buys, 'compra');
+  const currentSells = await formatTransactionList(transactions.current.sells, 'venta');
+  const historyBuys = await formatTransactionList(transactions.history.buys, 'compra');
+  const historySells = await formatTransactionList(transactions.history.sells, 'venta');
 
   return {
     color: 0xdaa520,
     author: {
-      name: `${user.username}'s Trading Post Delivery`,
+      name: `Transacciones de ${user.username}`,
       icon_url: user.displayAvatarURL()
     },
-    title: '<:TP:1303367310538440848> Trading Post Deliveries',
+    title: '<:TP:1303367310538440848> Transacciones del Trading Post',
     thumbnail: {
       url: 'https://wiki.guildwars2.com/images/8/81/Personal_Trader_Express.png'
     },
     fields: [
       {
-        name: '<:gold:1134754786705674290> Coins to Collect',
-        value: details.coins > 0 
-          ? `${gold} <:gold:1134754786705674290> ${silver} <:silver:1134756015691268106> ${copper} <:Copper:1134756013195661353>`
-          : 'No coins to collect',
+        name: '📥 Órdenes de Compra Actuales',
+        value: currentBuys || 'No hay órdenes de compra actuales',
         inline: false
       },
       {
-        name: '<:Trading_post_unlock:1303391934072623236> Items to Collect',
-        value: itemsValue,
+        name: '📤 Órdenes de Venta Actuales',
+        value: currentSells || 'No hay órdenes de venta actuales',
+        inline: false
+      },
+      {
+        name: '📋 Historial de Compras',
+        value: historyBuys || 'No hay historial de compras',
+        inline: false
+      },
+      {
+        name: '📊 Historial de Ventas',
+        value: historySells || 'No hay historial de ventas',
         inline: false
       }
     ],
     footer: {
-      text: 'Trading Post • Prices and items may vary',
+      text: 'Trading Post • Los precios y artículos pueden variar',
       icon_url: 'https://wiki.guildwars2.com/images/8/81/Personal_Trader_Express.png'
     },
     timestamp: new Date()
   };
 }
 
+async function formatTransactionList(transactions, type) {
+  if (!transactions || transactions.length === 0) return null;
+
+  const formattedTransactions = await Promise.all(transactions.slice(0, 5).map(async transaction => {
+    try {
+      const itemDetails = await getItemDetails(transaction.item_id);
+      const gold = Math.floor(transaction.price / 10000);
+      const silver = Math.floor((transaction.price % 10000) / 100);
+      const copper = transaction.price % 100;
+
+      return `${getRarityEmoji(itemDetails.rarity)} **${itemDetails.name}** x${transaction.quantity}\n` +
+             `└ Precio: ${gold}<:gold:1134754786705674290> ${silver}<:silver:1134756015691268106> ${copper}<:Copper:1134756013195661353>`;
+    } catch (error) {
+      console.error(`Error fetching item ${transaction.item_id}:`, error);
+      return `⚠️ Item Desconocido (ID: ${transaction.item_id}) x${transaction.quantity}`;
+    }
+  }));
+
+  return formattedTransactions.join('\n\n');
+}
+
 async function getItemDetails(itemId) {
   try {
-    const response = await axios.get(`https://api.guildwars2.com/v2/items/${itemId}?lang=en`);
+    const response = await axios.get(`https://api.guildwars2.com/v2/items/${itemId}?lang=es`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching item ${itemId}:`, error);

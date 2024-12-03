@@ -22,7 +22,7 @@
     "express": "^4.18.2",
     "hammertime": "^1.0.0",
     "moment-timezone": "^0.5.45",
-    "mongodb": "^6.10.0",
+    "mongodb": "^6.11.0",
     "mongoose": "^7.4.1",
     "node-cron": "^3.0.3",
     "node-fetch": "^3.2.6",

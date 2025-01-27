@@ -23,7 +23,7 @@
     "hammertime": "^1.0.0",
     "moment-timezone": "^0.5.45",
     "mongodb": "^6.11.0",
-    "mongoose": "^7.4.1",
+    "mongoose": "^8.8.3",
     "node-cron": "^3.0.3",
     "node-fetch": "^3.2.6",
     "rss-parser": "^3.13.0",
